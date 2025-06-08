@@ -2,52 +2,38 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"go_server/global"
-	"go_server/system/models"
+	"go_server/common"
+	"go_server/system/dto"
+	"go_server/system/services"
 	"go_server/utils"
-	"net/http"
 )
 
-/**
- * SysUserRegister
- *  @Description: 注册一个账号
- *  @param ctx
- */
-func SysUserRegister(ctx *gin.Context) {
-	var user models.SysUser
-	/*
-		ShouldBindJSON传入数据对应的结构体
-		如果json数据与传入的结构体数据相符合(可以有多余字段，但是不能缺少字段)
-		成功会返回一个nil,否则会返回一个错误对象
-	*/
-	if err := ctx.ShouldBindJSON(&user); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// SysUserRegister 用户注册
+func SysUserRegister(c *gin.Context) {
+	var req dto.RegisterUserReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		common.Error(c, common.ErrorCode, utils.GetErrorMsg(req, err))
 		return
 	}
-	hashedPwd, err := utils.HashPassword(user.Password)
-
+	token, err := services.Register(req)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		common.Error(c, common.ErrorCode, err.Error())
 		return
 	}
+	common.Success(c, gin.H{"token": token})
+}
 
-	user.Password = hashedPwd
-
-	token, err := utils.GenerateJWT(user.Username)
+// SysUserLogin 用户登录
+func SysUserLogin(c *gin.Context) {
+	var req dto.LoginReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		common.Error(c, common.ErrorCode, utils.GetErrorMsg(req, err))
+		return
+	}
+	token, err := services.Login(req)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		common.Error(c, common.ErrorCode, err.Error())
 		return
 	}
-
-	if err := global.DB.AutoMigrate(&user); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{
-		"token": token,
-	})
+	common.Success(c, gin.H{"token": token})
 }

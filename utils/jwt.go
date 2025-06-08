@@ -9,7 +9,9 @@ import (
 )
 
 // 密钥 (在生产环境中，应该将其放在环境变量中)
-var secretKey = []byte(config.AppConfig.JWT.PrivateKey)
+func getSecretKey() []byte {
+	return []byte(config.AppConfig.JWT.PrivateKey)
+}
 
 // JWT 的声明结构
 type MyClaims struct {
@@ -40,7 +42,7 @@ func GenerateJWT(username string) (string, error) {
 	}
 	// 创建 JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(secretKey)
+	return token.SignedString(getSecretKey())
 }
 
 /**
@@ -58,7 +60,7 @@ func ParseJWT(tokenString string) (*MyClaims, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		// 返回密钥，用于验证签名
-		return secretKey, nil
+		return getSecretKey(), nil
 	})
 	// 如果 token 无效或解析失败
 	if err != nil || !token.Valid {

@@ -1,9 +1,7 @@
 package services
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"go_server/common"
+	"errors"
 	"go_server/global"
 	"go_server/system/dto"
 	"go_server/system/models"
@@ -13,31 +11,50 @@ import (
 type GinJWTMiddleware struct {
 }
 
-func Login(c *gin.Context) {
-	//获取用户输入的用户名和密码绑定解析参数
-	var login dto.LoginReq
-	if err := c.ShouldBindJSON(&login); err != nil {
-		fmt.Println("JSON有误", err.Error())
-		common.Error(c, common.ErrorCode, utils.GetErrorMsg(login, err))
-		return
-	}
-	//查询数据库数据用户是否存在
+// Login 用户登录
+func Login(req dto.LoginReq) (string, error) {
 	var user models.SysUser
-	err := global.DB.Where("username = ?", login.Username).First(&user).Error
+	err := global.DB.Where("username = ?", req.Username).First(&user).Error
 	if err != nil {
-		fmt.Println("数据库报错", err.Error())
-		common.Error(c, common.ErrorCode, "登录用户不存在")
-		return
+		return "", errors.New("用户不存在")
 	}
-	//校验密码是否正确
-	_, err = utils.CompareHashAndPassword(user.Password, login.Password)
+	ok, err := utils.CompareHashAndPassword(user.Password, req.Password)
+	if err != nil || !ok {
+		return "", errors.New("密码错误")
+	}
+	token, err := utils.GenerateJWT(user.Username)
 	if err != nil {
-		common.Error(c, common.ErrorCode, "密码不正确")
-		return
+		return "", errors.New("生成token失败")
 	}
-	common.LoginSuccess(c, dto.LoginRes{
-		Code:        200,
-		AccessToken: "xxxxxxxx111",
-	})
-	fmt.Println("成功", "Hello World")
+	return token, nil
+}
+
+// Register 用户注册
+func Register(req dto.RegisterUserReq) (string, error) {
+	var count int64
+	global.DB.Model(&models.SysUser{}).Where("username = ?", req.Username).Count(&count)
+	if count > 0 {
+		return "", errors.New("该用户名已存在")
+	}
+	global.DB.Model(&models.SysUser{}).Where("email = ?", req.Email).Count(&count)
+	if count > 0 {
+		return "", errors.New("该邮箱已经注册")
+	}
+	hashedPwd, err := utils.HashPassword(req.Password)
+	if err != nil {
+		return "", errors.New("密码加密失败")
+	}
+	user := &models.SysUser{
+		Username: req.Username,
+		Password: hashedPwd,
+		Email:    req.Email,
+	}
+	if err := global.DB.Create(user).Error; err != nil {
+		return "", errors.New("注册失败，请稍后再试")
+	}
+	token, err := utils.GenerateJWT(user.Username)
+	if err != nil {
+		return "", errors.New("生成token失败")
+	}
+	return token, nil
 }

@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
     `user_id`     bigint(20)                                                    NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-    `dept_id`     bigint(20)                                                    NULL DEFAULT NULL COMMENT '部门ID',
     `username`    varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户账号',
     `nick_name`   varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户昵称',
     `user_type`   varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
@@ -30,12 +29,6 @@ CREATE TABLE `sys_user`
   COLLATE = utf8mb4_general_ci COMMENT = '用户信息表'
   ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Records of sys_user
--- ----------------------------
-INSERT INTO `sys_user`
-VALUES (1, 101, 'admin', 'TwelveT', '00', '2584533077@qq.com', '15788888888', 0, '/avatar.jpg',
-        '$2a$10$MBq3PvaIX9Yghhu.mm45wO8IC4WKXAUST9LvneCsQ71k/mrOdN6SO', 0, '0', '127.0.0.1', '2018-03-16 11:33:00',
-        'admin', '2021-02-11 11:33:00', 'admin', '2021-03-03 10:19:38', '管理员');
+
 
 

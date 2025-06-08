@@ -3,7 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"go_server/config"
-	"go_server/system/services"
+	"go_server/system/controllers"
 )
 
 /*
@@ -14,9 +14,9 @@ func SetRouter() *gin.Engine {
 
 	auth := r.Group("/api/auth")
 	{
-		auth.POST("login", services.Login)
+		auth.POST("login", controllers.SysUserLogin)
+		auth.POST("register", controllers.SysUserRegister)
 	}
-
 	return r
 }
 
@@ -24,7 +24,6 @@ func SetRouter() *gin.Engine {
 func InitRouter() {
 	r := SetRouter()
 	port := config.AppConfig.App.Port
-
 	if port == "" {
 		port = ":8080"
 	}

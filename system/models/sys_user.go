@@ -6,7 +6,6 @@ import (
 
 type SysUser struct {
 	UserID      uint64     `gorm:"primaryKey;autoIncrement;comment:'用户ID'" json:"user_id"` //primaryKey定义主键 autoIncrement定义自增
-	DeptID      *uint64    `gorm:"comment:'部门ID'" json:"dept_id"`                          // 指针类型表示可以为 NULL
 	Username    string     `gorm:"size:30;not null;comment:'用户账号'" json:"username"`
 	NickName    string     `gorm:"size:30;not null;comment:'用户昵称'" json:"nick_name"`
 	UserType    string     `gorm:"size:2;default:'00';comment:'用户类型（00系统用户）'" json:"user_type"`

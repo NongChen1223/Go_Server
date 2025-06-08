@@ -24,3 +24,20 @@ func (loginReq LoginReq) GetMessages() utils.ValidatorMessages {
 		"Type.required":      "登录类型不能为空",
 	}
 }
+
+// 注册用户接口
+type RegisterUserReq struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+}
+
+// 自定义错误信息
+func (registerUserReq RegisterUserReq) GetMessages() utils.ValidatorMessages {
+	return utils.ValidatorMessages{
+		"Username.required": "用户名不能为空",
+		"Password.required": "用户密码不能为空",
+		"Email.required":    "邮箱不能为空",
+		"Email.email":       "邮箱格式不正确",
+	}
+}
