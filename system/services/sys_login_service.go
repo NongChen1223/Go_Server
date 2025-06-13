@@ -22,7 +22,7 @@ func Login(req dto.LoginReq) (string, error) {
 	if err != nil || !ok {
 		return "", errors.New("密码错误")
 	}
-	token, err := utils.GenerateJWT(user.Username)
+	token, err := utils.GenerateJWT(user.Username, user.UserID)
 	if err != nil {
 		return "", errors.New("生成token失败")
 	}
@@ -52,9 +52,31 @@ func Register(req dto.RegisterUserReq) (string, error) {
 	if err := global.DB.Create(user).Error; err != nil {
 		return "", errors.New("注册失败，请稍后再试")
 	}
-	token, err := utils.GenerateJWT(user.Username)
+	token, err := utils.GenerateJWT(user.Username, user.UserID)
 	if err != nil {
 		return "", errors.New("生成token失败")
 	}
 	return token, nil
+}
+
+// UserInfo 获取用户信息
+func UserInfo(userID uint64) (*dto.UserInfoRes, error) {
+	var user models.SysUser
+	if err := global.DB.First(&user, userID).Error; err != nil {
+		return nil, errors.New("用户不存在")
+	}
+	res := &dto.UserInfoRes{
+		UserID:      user.UserID,
+		Username:    user.Username,
+		NickName:    user.NickName,
+		UserType:    user.UserType,
+		Email:       user.Email,
+		PhoneNumber: user.PhoneNumber,
+		Sex:         user.Sex,
+		Avatar:      user.Avatar,
+		LoginIP:     user.LoginIP,
+		LoginDate:   user.LoginDate,
+		CreateTime:  user.CreateTime,
+	}
+	return res, nil
 }

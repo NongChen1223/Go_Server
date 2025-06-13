@@ -37,3 +37,14 @@ func SysUserLogin(c *gin.Context) {
 	}
 	common.Success(c, gin.H{"token": token})
 }
+
+// SysUserInfo 获取用户信息
+func SysUserInfo(c *gin.Context) {
+	userID := c.GetUint64("userID")
+	userInfo, err := services.UserInfo(userID)
+	if err != nil {
+		common.Error(c, common.ErrorCode, err.Error())
+		return
+	}
+	common.Success(c, userInfo)
+}

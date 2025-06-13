@@ -15,7 +15,8 @@ func getSecretKey() []byte {
 
 // JWT 的声明结构
 type MyClaims struct {
-	username string
+	UserID   uint64 `json:"user_id"`
+	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
@@ -26,15 +27,16 @@ type MyClaims struct {
  *  @return string
  *  @return error
  */
-func GenerateJWT(username string) (string, error) {
+func GenerateJWT(username string, userid uint64) (string, error) {
 	// 使用 UUID 生成唯一的 JWTID
 	jwtID := uuid.New().String()
 	// 设置声明
 	claims := MyClaims{
-		username: username,
+		Username: username,
+		UserID:   userid, // 用户ID可以根据实际情况设置
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "twelvet",                                                                                  // 发行者
-			Subject:   fmt.Sprintf("user-%d", username),                                                           // 用户标识
+			Subject:   fmt.Sprintf("user-%d", userid),                                                             // 用户标识
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(1 * config.AppConfig.JWT.ExpirationHour))), // 1小时后过期
 			IssuedAt:  jwt.NewNumericDate(time.Now()),                                                             // 当前时间
 			ID:        jwtID,                                                                                      // 唯一标识

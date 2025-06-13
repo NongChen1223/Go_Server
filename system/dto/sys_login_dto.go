@@ -1,6 +1,9 @@
 package dto
 
-import "go_server/utils"
+import (
+	"go_server/utils"
+	"time"
+)
 
 type LoginReq struct {
 	Username  string `json:"username" binding:"required"`  // 用户名，必填
@@ -40,4 +43,19 @@ func (registerUserReq RegisterUserReq) GetMessages() utils.ValidatorMessages {
 		"Email.required":    "邮箱不能为空",
 		"Email.email":       "邮箱格式不正确",
 	}
+}
+
+// 获取用户信息请求
+type UserInfoRes struct {
+	UserID      uint64     `json:"user_id"`
+	Username    string     `json:"username"`
+	NickName    string     `json:"nick_name"`
+	UserType    string     `json:"user_type"`
+	Email       string     `json:"email"`
+	PhoneNumber string     `json:"phonenumber"`
+	Sex         *int       `json:"sex"`
+	Avatar      string     `json:"avatar"`
+	LoginIP     string     `json:"login_ip"`
+	LoginDate   *time.Time `json:"login_date"`
+	CreateTime  *time.Time `json:"create_time"`
 }
