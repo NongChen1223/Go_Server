@@ -6,11 +6,8 @@ import (
 )
 
 type LoginReq struct {
-	Username  string `json:"username" binding:"required"`  // 用户名，必填
-	Password  string `json:"password" binding:"required"`  // 密码，必填
-	AutoLogin bool   `json:"autoLogin"`                    // 是否自动登录，可选
-	GrantType string `json:"grantType" binding:"required"` // 授权类型，必填
-	Type      string `json:"type" binding:"required"`      // 登录类型，必填
+	UserName string `json:"user_name" binding:"required"` // 用户名，必填
+	Password string `json:"password" binding:"required"`  // 密码，必填
 }
 
 type LoginRes struct {
@@ -21,7 +18,7 @@ type LoginRes struct {
 // GetMessages 自定义错误信息
 func (loginReq LoginReq) GetMessages() utils.ValidatorMessages {
 	return utils.ValidatorMessages{
-		"Username.required":  "用户名不能为空",
+		"UserName.required":  "用户名不能为空",
 		"Password.required":  "用户密码不能为空",
 		"GrantType.required": "授权类型不能为空",
 		"Type.required":      "登录类型不能为空",
@@ -30,7 +27,7 @@ func (loginReq LoginReq) GetMessages() utils.ValidatorMessages {
 
 // 注册用户接口
 type RegisterUserReq struct {
-	Username string `json:"username" binding:"required"`
+	UserName string `json:"user_name" binding:"required"`
 	Password string `json:"password" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 }
@@ -48,11 +45,11 @@ func (registerUserReq RegisterUserReq) GetMessages() utils.ValidatorMessages {
 // 获取用户信息请求
 type UserInfoRes struct {
 	UserID      uint64     `json:"user_id"`
-	Username    string     `json:"username"`
+	UserName    string     `json:"user_name"`
 	NickName    string     `json:"nick_name"`
 	UserType    string     `json:"user_type"`
 	Email       string     `json:"email"`
-	PhoneNumber string     `json:"phonenumber"`
+	PhoneNumber string     `json:"phone_number"`
 	Sex         *int       `json:"sex"`
 	Avatar      string     `json:"avatar"`
 	LoginIP     string     `json:"login_ip"`

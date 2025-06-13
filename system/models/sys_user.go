@@ -6,11 +6,11 @@ import (
 
 type SysUser struct {
 	UserID      uint64     `gorm:"primaryKey;autoIncrement;comment:'用户ID'" json:"user_id"` //primaryKey定义主键 autoIncrement定义自增
-	Username    string     `gorm:"size:30;not null;comment:'用户账号'" json:"username"`
+	UserName    string     `gorm:"size:30;not null;comment:'用户账号'" json:"user_name"`
 	NickName    string     `gorm:"size:30;not null;comment:'用户昵称'" json:"nick_name"`
 	UserType    string     `gorm:"size:2;default:'00';comment:'用户类型（00系统用户）'" json:"user_type"`
 	Email       string     `gorm:"size:50;default:'';comment:'用户邮箱'" json:"email"`
-	PhoneNumber string     `gorm:"size:11;default:'';comment:'手机号码'" json:"phonenumber"`
+	PhoneNumber string     `gorm:"size:11;default:'';comment:'手机号码'" json:"phone_number"`
 	Sex         *int       `gorm:"type:tinyint;comment:'用户性别（0男 1女 2未知）'" json:"sex"`
 	Avatar      string     `gorm:"size:100;default:'';comment:'头像地址'" json:"avatar"`
 	Password    string     `gorm:"size:100;default:'';comment:'密码'" json:"password"`

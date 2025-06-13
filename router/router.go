@@ -19,7 +19,8 @@ func SetRouter() *gin.Engine {
 		auth.POST("register", controllers.SysUserRegister) // 用户注册
 	}
 	api := r.Group("/api/user")
-	api.Use(middleware.JWTAuthMiddleware()) // 使用 JWT 中间件进行身份验证
+	// 使用 JWT 中间件进行身份验证
+	api.Use(middleware.JWTAuthMiddleware())
 	// 需要身份验证的路由
 	{
 		auth.GET("info", controllers.SysUserInfo) // 获取用户信息

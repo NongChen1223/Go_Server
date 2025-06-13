@@ -40,6 +40,7 @@ func SysUserLogin(c *gin.Context) {
 
 // SysUserInfo 获取用户信息
 func SysUserInfo(c *gin.Context) {
+	println("获取用户信息")
 	userID := c.GetUint64("userID")
 	userInfo, err := services.UserInfo(userID)
 	if err != nil {

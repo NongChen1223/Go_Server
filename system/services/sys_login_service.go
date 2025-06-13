@@ -14,7 +14,7 @@ type GinJWTMiddleware struct {
 // Login 用户登录
 func Login(req dto.LoginReq) (string, error) {
 	var user models.SysUser
-	err := global.DB.Where("username = ?", req.Username).First(&user).Error
+	err := global.DB.Where("user_name = ?", req.UserName).First(&user).Error
 	if err != nil {
 		return "", errors.New("用户不存在")
 	}
@@ -22,7 +22,7 @@ func Login(req dto.LoginReq) (string, error) {
 	if err != nil || !ok {
 		return "", errors.New("密码错误")
 	}
-	token, err := utils.GenerateJWT(user.Username, user.UserID)
+	token, err := utils.GenerateJWT(user.UserID)
 	if err != nil {
 		return "", errors.New("生成token失败")
 	}
@@ -32,7 +32,7 @@ func Login(req dto.LoginReq) (string, error) {
 // Register 用户注册
 func Register(req dto.RegisterUserReq) (string, error) {
 	var count int64
-	global.DB.Model(&models.SysUser{}).Where("username = ?", req.Username).Count(&count)
+	global.DB.Model(&models.SysUser{}).Where("user_name = ?", req.UserName).Count(&count)
 	if count > 0 {
 		return "", errors.New("该用户名已存在")
 	}
@@ -45,14 +45,14 @@ func Register(req dto.RegisterUserReq) (string, error) {
 		return "", errors.New("密码加密失败")
 	}
 	user := &models.SysUser{
-		Username: req.Username,
+		UserName: req.UserName,
 		Password: hashedPwd,
 		Email:    req.Email,
 	}
 	if err := global.DB.Create(user).Error; err != nil {
 		return "", errors.New("注册失败，请稍后再试")
 	}
-	token, err := utils.GenerateJWT(user.Username, user.UserID)
+	token, err := utils.GenerateJWT(user.UserID)
 	if err != nil {
 		return "", errors.New("生成token失败")
 	}
@@ -67,7 +67,7 @@ func UserInfo(userID uint64) (*dto.UserInfoRes, error) {
 	}
 	res := &dto.UserInfoRes{
 		UserID:      user.UserID,
-		Username:    user.Username,
+		UserName:    user.UserName,
 		NickName:    user.NickName,
 		UserType:    user.UserType,
 		Email:       user.Email,

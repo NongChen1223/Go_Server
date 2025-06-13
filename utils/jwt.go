@@ -27,16 +27,15 @@ type MyClaims struct {
  *  @return string
  *  @return error
  */
-func GenerateJWT(username string, userid uint64) (string, error) {
+func GenerateJWT(userid uint64) (string, error) {
 	// 使用 UUID 生成唯一的 JWTID
 	jwtID := uuid.New().String()
 	// 设置声明
 	claims := MyClaims{
-		Username: username,
-		UserID:   userid, // 用户ID可以根据实际情况设置
+		UserID: userid, // 用户ID可以根据实际情况设置
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "twelvet",                                                                                  // 发行者
-			Subject:   fmt.Sprintf("user-%d", userid),                                                             // 用户标识
+			//Issuer:    "twelvet",                                                                                  // 发行者
+			//Subject:   fmt.Sprintf("user-%d", userid),                                                             // 用户标识
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(1 * config.AppConfig.JWT.ExpirationHour))), // 1小时后过期
 			IssuedAt:  jwt.NewNumericDate(time.Now()),                                                             // 当前时间
 			ID:        jwtID,                                                                                      // 唯一标识
