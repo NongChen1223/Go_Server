@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go_server/common"
+	"go_server/constants"
 	"go_server/utils"
 	"strings"
 )
@@ -13,30 +15,41 @@ import (
  */
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// 获取请求头中的 Authorization 字段
 		authHeader := c.Request.Header.Get("Authorization")
-		// 检查 Authorization 头是否存在
+		fmt.Println("中间件token验证", authHeader)
+		// 1. 检查 Authorization 头是否存在
 		if authHeader == "" {
-			common.Error(c, common.ErrTokenEmpty, common.TokenEmptyMsg)
-			// “中断请求流程”，让后面的代码不再执行 如果 token 校验失败，调用 c.Abort() 后，后面的 handler 不会再执行，直接返回响应
-			c.Abort()
+			// Token 不能为空，返回自定义错误码和信息
+			common.Error(c, constants.ErrTokenEmpty, constants.TokenEmptyMsg)
+			c.Abort() // 中断请求流程
 			return
 		}
-		//去掉请求头 Authorization 里的前缀 Bearer ，只保留后面的 token 字符串。
+		// 2. 去掉前缀 "Bearer "，只保留 token 字符串
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		fmt.Println("token字符串", tokenStr)
+		// 3. 解析并校验 token
 		claim, err := utils.ParseJWT(tokenStr)
-		//token无效
+		fmt.Printf("中间件解析token: claim=%+v, err=%v\n", claim, err)
+		// 4. 校验 token 是否有效
 		if err != nil {
-			common.Error(c, common.ErrTokenInvalid, common.TokenInvalidMsg)
+			// 判断是否为自定义 JWTError 类型
+			if jwtErr, ok := err.(*utils.JWTError); ok {
+				// 返回对应的 code 和 message
+				common.Error(c, jwtErr.Code, jwtErr.Message)
+			} else {
+				// 兜底处理，返回通用 token 错误
+				common.Error(c, constants.ErrTokenInvalid, err.Error())
+			}
 			c.Abort()
 			return
 		}
 		/**
-		将解析后的用户信息 用户ID和用户名存到 gin 的上下文（Context）里。
-		这样后续的接口处理函数可以通过 c.Get("userID") 直接拿到当前登录用户的信息，无需重复解析 token。
-		*/
-		c.Set("userID", claim.UserID)
-		c.Set("username", claim.Username)
-		// 继续处理请求
+		 * 5. 将解析后的用户信息（如用户ID）存到 gin 的上下文（Context）里
+		 * 这样后续的接口处理函数可以通过 c.Get("user_id") 直接拿到当前登录用户的信息，无需重复解析 token
+		 */
+		c.Set("user_id", claim.UserID)
+		// 6. 继续处理请求
 		c.Next()
 	}
 }

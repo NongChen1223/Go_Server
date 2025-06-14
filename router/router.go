@@ -23,7 +23,7 @@ func SetRouter() *gin.Engine {
 	api.Use(middleware.JWTAuthMiddleware())
 	// 需要身份验证的路由
 	{
-		auth.GET("info", controllers.SysUserInfo) // 获取用户信息
+		api.GET("info", controllers.SysUserInfo) // 获取用户信息
 	}
 	return r
 }

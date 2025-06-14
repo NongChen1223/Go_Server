@@ -2,20 +2,9 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
+	"go_server/constants"
 	"go_server/system/dto"
 	"net/http"
-)
-
-const (
-	ErrorCode       = 500  //失败响应
-	SuccessCode     = 200  //成功响应
-	ErrTokenEmpty   = 1001 // Token 为空
-	ErrTokenInvalid = 1002 // Token 无效
-)
-
-const (
-	TokenEmptyMsg   = "Token 不能为空"
-	TokenInvalidMsg = "无效的Token"
 )
 
 type Response struct {
@@ -42,12 +31,12 @@ func LoginSuccess(c *gin.Context, res dto.LoginRes) {
 
 // 成功响应（带数据）
 func Success(c *gin.Context, data interface{}) {
-	Respond(c, http.StatusOK, SuccessCode, "操作成功", data)
+	Respond(c, http.StatusOK, constants.SuccessCode, "操作成功", data)
 }
 
 // 成功响应（带自定义消息）
 func SuccessWithMsg(c *gin.Context, msg string, data interface{}) {
-	Respond(c, http.StatusOK, SuccessCode, msg, data)
+	Respond(c, http.StatusOK, constants.SuccessCode, msg, data)
 }
 
 // 错误响应（无数据）

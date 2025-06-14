@@ -60,9 +60,9 @@ func Register(req dto.RegisterUserReq) (string, error) {
 }
 
 // UserInfo 获取用户信息
-func UserInfo(userID uint64) (*dto.UserInfoRes, error) {
+func UserInfo(UserID uint64) (*dto.UserInfoRes, error) {
 	var user models.SysUser
-	if err := global.DB.First(&user, userID).Error; err != nil {
+	if err := global.DB.First(&user, UserID).Error; err != nil {
 		return nil, errors.New("用户不存在")
 	}
 	res := &dto.UserInfoRes{
