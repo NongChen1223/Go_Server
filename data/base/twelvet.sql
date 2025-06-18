@@ -1,32 +1,77 @@
 -- ----------------------------
--- Table structure for sys_user
+-- 前台用户表
+-- 用途：存储前台用户信息，基础用户数据
+-- 场景：用户注册、登录、个人信息管理等
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
-    `user_id`      bigint(20)                                                    NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-    `user_name`    varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户账号',
-    `nick_name`    varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户昵称',
-    `user_type`    varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
-    `email`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '用户邮箱',
-    `phone_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '手机号码',
-    `sex`          tinyint(1)                                                    NULL DEFAULT NULL COMMENT '用户性别（0男 1女 2未知）',
-    `avatar`       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
-    `password`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
-    `status`       tinyint(1)                                                    NULL DEFAULT NULL COMMENT '帐号状态（0正常 1停用）',
-    `del_flag`     char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-    `login_ip`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '最后登陆IP',
-    `login_date`   datetime                                                      NULL DEFAULT NULL COMMENT '最后登陆时间',
-    `create_by`    varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '创建者',
-    `create_time`  datetime                                                      NULL DEFAULT NULL COMMENT '创建时间',
-    `update_by`    varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '更新者',
-    `update_time`  datetime                                                      NULL DEFAULT NULL COMMENT '更新时间',
-    `remark`       varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-    PRIMARY KEY (`user_id`) USING BTREE
+    `user_id`         bigint(20)                                                    NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+    `user_name`       varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户账号',
+    `nick_name`       varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '用户昵称',
+    `user_type`       varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
+    `email`           varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '用户邮箱',
+    `phone_number`    varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '手机号码',
+    `sex`             tinyint(1)                                                    NULL DEFAULT NULL COMMENT '用户性别（0男 1女 2未知）',
+    `avatar`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
+    `password`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
+    `status`          tinyint(1)                                                    NULL DEFAULT 1 COMMENT '帐号状态（0停用 1正常）',
+    `del_flag`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+    `login_ip`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '最后登陆IP',
+    `login_date`      datetime                                                      NULL DEFAULT NULL COMMENT '最后登陆时间',
+    `create_time`     datetime                                                      NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`     datetime                                                      NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `remark`          varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (`user_id`) USING BTREE,
+    UNIQUE KEY `uk_user_name` (`user_name`) COMMENT '用户名唯一索引',
+    INDEX `idx_email` (`email`) COMMENT '邮箱索引',
+    INDEX `idx_phone` (`phone_number`) COMMENT '手机号索引',
+    INDEX `idx_status` (`status`) COMMENT '状态索引'
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 6
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_general_ci COMMENT = '用户信息表'
+  COLLATE = utf8mb4_general_ci COMMENT = '前台用户表'
+  ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 后台管理员用户表
+-- 用途：存储后台管理员信息，包含权限管理相关字段
+-- 场景：后台管理员登录、权限控制、操作审计等
+-- ----------------------------
+CREATE TABLE `sys_admin_user`
+(
+    `admin_id`        bigint(20)                                                    NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
+    `admin_name`      varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '管理员账号',
+    `real_name`       varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '真实姓名',
+    `email`           varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '邮箱',
+    `phone_number`    varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '手机号码',
+    `avatar`          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
+    `password`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
+    `status`          tinyint(1)                                                    NULL DEFAULT 1 COMMENT '帐号状态（0停用 1正常）',
+    `del_flag`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+    `login_ip`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '最后登陆IP',
+    `login_date`      datetime                                                      NULL DEFAULT NULL COMMENT '最后登陆时间',
+    `login_count`     int(11)                                                       NULL DEFAULT 0 COMMENT '登录次数',
+    `last_pwd_time`   datetime                                                      NULL DEFAULT NULL COMMENT '最后修改密码时间',
+    `pwd_error_count` int(11)                                                       NULL DEFAULT 0 COMMENT '密码错误次数',
+    `lock_time`       datetime                                                      NULL DEFAULT NULL COMMENT '账号锁定时间',
+    `role_ids`        varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '角色ID列表，逗号分隔',
+    `department`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '所属部门',
+    `position`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '职位',
+    `create_by`       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '创建者',
+    `create_time`     datetime                                                      NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT '' COMMENT '更新者',
+    `update_time`     datetime                                                      NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `remark`          varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (`admin_id`) USING BTREE,
+    UNIQUE KEY `uk_admin_name` (`admin_name`) COMMENT '管理员账号唯一索引',
+    UNIQUE KEY `uk_email` (`email`) COMMENT '邮箱唯一索引',
+    INDEX `idx_status` (`status`) COMMENT '状态索引',
+    INDEX `idx_department` (`department`) COMMENT '部门索引'
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci COMMENT = '后台管理员用户表'
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
