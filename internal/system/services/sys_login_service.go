@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 	"go_server/global"
-	"go_server/system/dto"
-	"go_server/system/models"
+	"go_server/internal/system/dto"
+	"go_server/models"
 	"go_server/utils"
 )
 

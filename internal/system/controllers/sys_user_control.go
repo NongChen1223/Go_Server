@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go_server/common"
 	"go_server/constants"
-	"go_server/system/dto"
-	"go_server/system/services"
+	"go_server/internal/system/dto"
+	"go_server/internal/system/services"
 	"go_server/utils"
 )
 
@@ -28,6 +29,8 @@ func SysUserRegister(c *gin.Context) {
 func SysUserLogin(c *gin.Context) {
 	var req dto.LoginReq
 	if err := c.ShouldBindJSON(&req); err != nil {
+		// 打印详细错误信息以便调试
+		fmt.Printf("登录参数绑定错误: %v\n", err)
 		common.Error(c, constants.ErrorCode, utils.GetErrorMsg(req, err))
 		return
 	}

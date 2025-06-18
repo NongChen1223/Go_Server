@@ -3,7 +3,7 @@ package common
 import (
 	"github.com/gin-gonic/gin"
 	"go_server/constants"
-	"go_server/system/dto"
+	"go_server/internal/system/dto"
 	"net/http"
 )
 

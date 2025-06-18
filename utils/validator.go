@@ -18,6 +18,10 @@ type ValidatorMessages map[string]string
  *  @return string
  */
 func GetErrorMsg(request interface{}, err error) string {
+	// 处理特殊错误
+	if err != nil && err.Error() == "EOF" {
+		return "请求数据为空，请提供必要的信息"
+	}
 	if _, isValidatorErrors := err.(validator.ValidationErrors); isValidatorErrors {
 		_, isValidator := request.(Validator)
 		for _, v := range err.(validator.ValidationErrors) {
@@ -30,5 +34,5 @@ func GetErrorMsg(request interface{}, err error) string {
 			return v.Error()
 		}
 	}
-	return "Parameter error"
+	return "参数格式错误，请检查输入"
 }

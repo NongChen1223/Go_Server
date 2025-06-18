@@ -3,28 +3,31 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"go_server/config"
-	"go_server/middleware"
-	"go_server/system/controllers"
+	systemRouters "go_server/internal/system/routers"
 )
 
 /*
- *gin.Engine 表示该函数为返回一个指针类型
+ * SetRouter 设置路由
+ * gin.Engine 表示该函数为返回一个指针类型
  */
 func SetRouter() *gin.Engine {
 	r := gin.Default()
-	auth := r.Group("/api/auth")
-	// 不需要身份验证的路由
+
+	// 创建 v1 版本的路由组
+	v1 := r.Group("/v1")
 	{
-		auth.POST("login", controllers.SysUserLogin)       // 用户登录
-		auth.POST("register", controllers.SysUserRegister) // 用户注册
+		// 集成各端路由
+		systemRouters.SetupSystemRoutes(v1) // 系统路由
 	}
-	api := r.Group("/api/user")
-	// 使用 JWT 中间件进行身份验证
-	api.Use(middleware.JWTAuthMiddleware())
-	// 需要身份验证的路由
-	{
-		api.GET("info", controllers.SysUserInfo) // 获取用户信息
-	}
+
+	// 健康检查接口
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "ok",
+			"message": "服务运行正常",
+		})
+	})
+
 	return r
 }
 
