@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"go_server/config"
+	adminRouters "go_server/internal/admin/routers"
 	systemRouters "go_server/internal/system/routers"
 )
 
@@ -17,6 +18,7 @@ func SetRouter() *gin.Engine {
 	v1 := r.Group("/v1")
 	{
 		// 集成各端路由
+		adminRouters.SetupAdminRoutes(v1)   // 后台管理路由
 		systemRouters.SetupSystemRoutes(v1) // 系统路由
 	}
 

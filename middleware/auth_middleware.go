@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go_server/common"
 	"go_server/constants"
+	"go_server/global"
+	"go_server/models"
 	"go_server/utils"
 	"strings"
 )
@@ -50,6 +52,53 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		 */
 		c.Set("user_id", claim.UserID)
 		// 6. 继续处理请求
+		c.Next()
+	}
+}
+
+// AdminAuthMiddleware 管理员认证中间件
+func AdminAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 获取请求头中的 Authorization 字段
+		authHeader := c.Request.Header.Get("Authorization")
+
+		// 检查 Authorization 头是否存在
+		if authHeader == "" {
+			common.Error(c, constants.ErrTokenEmpty, "管理员token不能为空")
+			c.Abort()
+			return
+		}
+
+		// 去掉前缀 "Bearer "，只保留 token 字符串
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+
+		// 解析并校验 token
+		claim, err := utils.ParseJWT(tokenStr)
+		if err != nil {
+			if jwtErr, ok := err.(*utils.JWTError); ok {
+				common.Error(c, jwtErr.Code, jwtErr.Message)
+			} else {
+				common.Error(c, constants.ErrTokenInvalid, "管理员token无效")
+			}
+			c.Abort()
+			return
+		}
+
+		// 验证管理员是否存在且状态正常
+		var admin models.SysAdminUser
+		err = global.DB.Where("admin_id = ? AND status = ? AND del_flag = ?",
+			claim.UserID, models.AdminStatusEnabled, models.AdminDelFlagExist).First(&admin).Error
+		if err != nil {
+			common.Error(c, constants.ErrTokenInvalid, "管理员账号不存在或已被禁用")
+			c.Abort()
+			return
+		}
+
+		// 将管理员信息存到上下文中
+		c.Set("admin_id", admin.AdminID)
+		c.Set("admin_name", admin.AdminName)
+
+		// 继续处理请求
 		c.Next()
 	}
 }
