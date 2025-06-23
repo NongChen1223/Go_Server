@@ -15,6 +15,8 @@ type SysPublisher struct {
 	Status        int        `gorm:"type:tinyint;not null;default:1;comment:'状态（0停用 1正常）- 控制厂商是否可见'" json:"status"`
 	CreateTime    *time.Time `gorm:"not null;default:CURRENT_TIMESTAMP;comment:'创建时间 - 自动填充'" json:"create_time"`
 	UpdateTime    *time.Time `gorm:"not null;default:CURRENT_TIMESTAMP;comment:'更新时间 - 自动更新'" json:"update_time"`
+	CreateBy      string     `gorm:"size:64;default:'';comment:'创建者 - 记录创建人'" json:"create_by"`
+	UpdateBy      string     `gorm:"size:64;default:'';comment:'更新者 - 记录最后修改人'" json:"update_by"`
 }
 
 // TableName 指定表名

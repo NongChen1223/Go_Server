@@ -38,6 +38,16 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 					dictDataGroup.GET("/:type", controllers.GetDictDataByType) // 根据类型获取字典数据
 				}
 			}
+
+			// 游戏厂商管理路由组
+			publisherGroup := authAdmin.Group("/publishers")
+			{
+				publisherGroup.GET("", controllers.GetPublisherList)       // 获取厂商列表
+				publisherGroup.GET("/:id", controllers.GetPublisherDetail) // 获取厂商详情
+				publisherGroup.POST("", controllers.CreatePublisher)       // 创建厂商
+				publisherGroup.PUT("/:id", controllers.UpdatePublisher)    // 更新厂商
+				publisherGroup.DELETE("/:id", controllers.DeletePublisher) // 删除厂商
+			}
 		}
 	}
 }

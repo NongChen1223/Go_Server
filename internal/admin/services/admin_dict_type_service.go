@@ -88,22 +88,26 @@ func GetDictTypeDetail(dictID uint64) (*dto.DictTypeRes, error) {
 	}
 
 	// 将数据库模型转换为响应DTO
-	// 这样做的好处：控制返回给前端的字段，提高安全性
-	return &dto.DictTypeRes{
-		DictID:     dictType.DictID,
-		DictName:   dictType.DictName,
-		DictType:   dictType.DictType,
-		Status:     dictType.Status,
-		Remark:     dictType.Remark,
-		CreateTime: dictType.CreateTime,
-		UpdateTime: dictType.UpdateTime,
-		CreateBy:   dictType.CreateBy,
-		UpdateBy:   dictType.UpdateBy,
-	}, nil
+	// 使用逐个赋值的方式，更清晰明了
+	res := &dto.DictTypeRes{
+		DictID:   dictType.DictID,
+		DictName: dictType.DictName,
+		DictType: dictType.DictType,
+		Status:   dictType.Status,
+	}
+
+	// 赋值嵌入的公共字段
+	res.Remark = dictType.Remark
+	res.CreateTime = dictType.CreateTime
+	res.UpdateTime = dictType.UpdateTime
+	res.CreateBy = dictType.CreateBy
+	res.UpdateBy = dictType.UpdateBy
+
+	return res, nil
 }
 
 // GetDictTypeList 获取字典类型列表（支持分页和条件查询）
-// 这是管理后台最常用的查询接口
+// 这是管理后台最常用地查询接口
 func GetDictTypeList(query dto.DictTypeQuery) (int64, []*dto.DictTypeRes, error) {
 	var dictTypes []models.SysDictType
 	var total int64
@@ -138,20 +142,26 @@ func GetDictTypeList(query dto.DictTypeQuery) (int64, []*dto.DictTypeRes, error)
 		return 0, nil, err
 	}
 
-	// 转换为响应结构体
+	// 转换为响应结构体数组
 	var result []*dto.DictTypeRes
 	for _, dictType := range dictTypes {
-		result = append(result, &dto.DictTypeRes{
-			DictID:     dictType.DictID,
-			DictName:   dictType.DictName,
-			DictType:   dictType.DictType,
-			Status:     dictType.Status,
-			Remark:     dictType.Remark,
-			CreateTime: dictType.CreateTime,
-			UpdateTime: dictType.UpdateTime,
-			CreateBy:   dictType.CreateBy,
-			UpdateBy:   dictType.UpdateBy,
-		})
+		// 创建单个响应对象
+		res := &dto.DictTypeRes{
+			DictID:   dictType.DictID,
+			DictName: dictType.DictName,
+			DictType: dictType.DictType,
+			Status:   dictType.Status,
+		}
+
+		// 赋值嵌入的公共字段
+		res.Remark = dictType.Remark
+		res.CreateTime = dictType.CreateTime
+		res.UpdateTime = dictType.UpdateTime
+		res.CreateBy = dictType.CreateBy
+		res.UpdateBy = dictType.UpdateBy
+
+		// 添加到结果数组中
+		result = append(result, res)
 	}
 
 	return total, result, nil
