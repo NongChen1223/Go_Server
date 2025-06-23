@@ -50,6 +50,7 @@ func UpdateDictType(req dto.DictTypeReq, adminName string) error {
 	}
 
 	// 如果修改了字典类型标识，需要检查新标识是否与其他记录冲突
+	// 只有当新的dict_type与原来的不同时，才需要检查重复性
 	if req.DictType != dictType.DictType {
 		var count int64
 		// 查找相同类型但不同ID的记录
