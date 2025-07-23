@@ -11,7 +11,18 @@ import (
 )
 
 // CreatePublisher 创建游戏厂商
-// 接收前端POST请求，创建新的游戏厂商
+// @Summary 创建游戏厂商
+// @Description 创建新的游戏厂商信息
+// @Tags [Admin]厂商管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.PublisherReq true "厂商信息"
+// @Success 200 {object} common.Response "创建成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 500 {object} common.Response "服务器错误"
+// @Router /v1/admin/publishers [post]
 func CreatePublisher(c *gin.Context) {
 	var req dto.PublisherReq
 	// ShouldBindJSON 自动解析JSON请求体并验证参数
@@ -40,7 +51,19 @@ func CreatePublisher(c *gin.Context) {
 }
 
 // UpdatePublisher 更新游戏厂商
-// 接收前端PUT请求，更新指定的游戏厂商
+// @Summary 更新游戏厂商
+// @Description 根据ID更新游戏厂商信息
+// @Tags [Admin]厂商管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "厂商ID"
+// @Param request body dto.PublisherReq true "厂商信息"
+// @Success 200 {object} common.Response "更新成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "厂商不存在"
+// @Router /v1/admin/publishers/{id} [put]
 func UpdatePublisher(c *gin.Context) {
 	var req dto.PublisherReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -76,7 +99,18 @@ func UpdatePublisher(c *gin.Context) {
 }
 
 // DeletePublisher 删除游戏厂商
-// 接收前端DELETE请求，删除指定的游戏厂商
+// @Summary 删除游戏厂商
+// @Description 根据ID删除游戏厂商
+// @Tags [Admin]厂商管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "厂商ID"
+// @Success 200 {object} common.Response "删除成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "厂商不存在"
+// @Router /v1/admin/publishers/{id} [delete]
 func DeletePublisher(c *gin.Context) {
 	// 从URL路径参数中获取要删除的游戏厂商ID
 	publisherIDStr := c.Param("id")
@@ -97,7 +131,18 @@ func DeletePublisher(c *gin.Context) {
 }
 
 // GetPublisherDetail 获取游戏厂商详情
-// 接收前端GET请求，返回指定游戏厂商的详细信息
+// @Summary 获取游戏厂商详情
+// @Description 根据ID获取游戏厂商的详细信息
+// @Tags [Admin]厂商管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "厂商ID"
+// @Success 200 {object} common.Response{data=dto.PublisherRes} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "厂商不存在"
+// @Router /v1/admin/publishers/{id} [get]
 func GetPublisherDetail(c *gin.Context) {
 	publisherIDStr := c.Param("id")
 	publisherID, err := strconv.ParseUint(publisherIDStr, 10, 64)
@@ -118,7 +163,20 @@ func GetPublisherDetail(c *gin.Context) {
 }
 
 // GetPublisherList 获取游戏厂商列表
-// 接收前端GET请求，返回游戏厂商列表（支持分页和筛选）
+// @Summary 获取游戏厂商列表
+// @Description 分页获取游戏厂商列表，支持按名称筛选
+// @Tags [Admin]厂商管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param publisher_name query string false "厂商名称（模糊查询）"
+// @Param status query int false "状态（0停用 1正常）"
+// @Param page_num query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Success 200 {object} common.PageResponse{records=[]dto.PublisherRes} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Router /v1/admin/publishers [get]
 func GetPublisherList(c *gin.Context) {
 	var query dto.PublisherQuery
 	// ShouldBindQuery 自动解析URL查询参数

@@ -19,6 +19,9 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 		authAdmin := admin.Group("")
 		authAdmin.Use(middleware.AdminAuthMiddleware()) // 管理员权限中间件
 		{
+			authAdmin.POST("/logout", controllers.AdminLogout) // 管理员登出
+
+			// 字典管理路由组
 			// 字典管理路由组
 			dictGroup := authAdmin.Group("/dict")
 			{

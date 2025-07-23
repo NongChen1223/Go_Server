@@ -12,7 +12,18 @@ import (
 )
 
 // CreateDictType 创建字典类型
-// 接收前端POST请求，创建新的字典类型
+// @Summary 创建字典类型
+// @Description 创建新的字典类型，用于系统配置管理
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.DictTypeReq true "字典类型信息"
+// @Success 200 {object} common.Response "创建成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 500 {object} common.Response "服务器错误"
+// @Router /v1/admin/dict/types [post]
 func CreateDictType(c *gin.Context) {
 	var req dto.DictTypeReq
 	// ShouldBindJSON 自动解析JSON请求体并验证参数
@@ -41,7 +52,19 @@ func CreateDictType(c *gin.Context) {
 }
 
 // UpdateDictType 更新字典类型
-// 接收前端PUT请求，更新指定的字典类型
+// @Summary 更新字典类型
+// @Description 根据ID更新字典类型信息
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "字典类型ID"
+// @Param request body dto.DictTypeReq true "字典类型信息"
+// @Success 200 {object} common.Response "更新成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "字典类型不存在"
+// @Router /v1/admin/dict/types/{id} [put]
 func UpdateDictType(c *gin.Context) {
 	var req dto.DictTypeReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -77,7 +100,18 @@ func UpdateDictType(c *gin.Context) {
 }
 
 // DeleteDictType 删除字典类型
-// 接收前端DELETE请求，删除指定的字典类型
+// @Summary 删除字典类型
+// @Description 根据ID删除字典类型
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "字典类型ID"
+// @Success 200 {object} common.Response "删除成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "字典类型不存在"
+// @Router /v1/admin/dict/types/{id} [delete]
 func DeleteDictType(c *gin.Context) {
 	// 从URL路径参数中获取要删除的字典类型ID
 	dictIDStr := c.Param("id")
@@ -98,7 +132,18 @@ func DeleteDictType(c *gin.Context) {
 }
 
 // GetDictTypeDetail 获取字典类型详情
-// 接收前端GET请求，返回指定字典类型的详细信息
+// @Summary 获取字典类型详情
+// @Description 根据ID获取字典类型的详细信息
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "字典类型ID"
+// @Success 200 {object} common.Response{data=dto.DictTypeRes} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "字典类型不存在"
+// @Router /v1/admin/dict/types/{id} [get]
 func GetDictTypeDetail(c *gin.Context) {
 	dictIDStr := c.Param("id")
 	dictID, err := strconv.ParseUint(dictIDStr, 10, 64)
@@ -120,7 +165,21 @@ func GetDictTypeDetail(c *gin.Context) {
 }
 
 // GetDictTypeList 获取字典类型列表
-// 接收前端GET请求，返回字典类型列表（支持分页和筛选）
+// @Summary 获取字典类型列表
+// @Description 分页获取字典类型列表，支持按名称和类型筛选
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param dict_name query string false "字典名称（模糊查询）"
+// @Param dict_type query string false "字典类型（模糊查询）"
+// @Param status query int false "状态（0停用 1正常）"
+// @Param page_num query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Success 200 {object} common.PageResponse{records=[]dto.DictTypeRes} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Router /v1/admin/dict/types [get]
 func GetDictTypeList(c *gin.Context) {
 	var query dto.DictTypeQuery
 	fmt.Println("获取字典类型列表")
@@ -152,7 +211,17 @@ func GetDictTypeList(c *gin.Context) {
 }
 
 // GetDictDataByType 根据字典类型获取字典数据
-// 这是一个简单的接口，用于前端获取某个类型下的所有字典项
+// @Summary 根据类型获取字典数据
+// @Description 根据字典类型标识获取该类型下的所有字典数据
+// @Tags [Admin]字典管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param type path string true "字典类型标识"
+// @Success 200 {object} common.Response{data=[]interface{}} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Router /v1/admin/dict/data/{type} [get]
 func GetDictDataByType(c *gin.Context) {
 	dictType := c.Param("type")
 	if dictType == "" {

@@ -5,6 +5,11 @@ import (
 	"go_server/config"
 	adminRouters "go_server/internal/admin/routers"
 	systemRouters "go_server/internal/system/routers"
+
+	// Swagger相关导入
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
+	_ "go_server/docs" // 导入生成的docs包
 )
 
 /*
@@ -29,6 +34,11 @@ func SetRouter() *gin.Engine {
 			"message": "服务运行正常",
 		})
 	})
+
+	// Swagger文档路由 - 只在开发环境启用
+	if gin.Mode() != gin.ReleaseMode {
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	}
 
 	return r
 }
