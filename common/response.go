@@ -71,6 +71,20 @@ func SuccessWithPage(c *gin.Context, current int64, size int, total int64, recor
 		pages = 0
 	}
 
+	// 如果records为nil，设置为空数组
+	// 确保JSON序列化时返回[]而不是null
+	/**
+		错误写法:注意这个写法 Go 中空切片和 nil 在 JSON 序列化时的行为不同：
+	    nil 切片序列化为 null
+	    空切片 [] 序列化为 []
+	    if records == nil {
+			records = []interface{}{}
+		}
+	*/
+	if records == nil {
+		records = make([]interface{}, 0)
+	}
+
 	pageData := PageResponse{
 		Current: current,
 		Size:    size,
@@ -88,6 +102,11 @@ func SuccessWithPageAndMsg(c *gin.Context, msg string, current int64, size int, 
 	pages := (total + int64(size) - 1) / int64(size) // 向上取整
 	if total == 0 {
 		pages = 0
+	}
+
+	// 如果records为nil，设置为空数组
+	if records == nil {
+		records = make([]interface{}, 0)
 	}
 
 	pageData := PageResponse{

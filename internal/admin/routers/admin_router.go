@@ -51,6 +51,16 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 				publisherGroup.PUT("/:id", controllers.UpdatePublisher)    // 更新厂商
 				publisherGroup.DELETE("/:id", controllers.DeletePublisher) // 删除厂商
 			}
+
+			// 游戏管理路由组
+			gameGroup := authAdmin.Group("/games")
+			{
+				gameGroup.GET("", controllers.GetGameList)       // 获取游戏列表
+				gameGroup.GET("/:id", controllers.GetGameDetail) // 获取游戏详情
+				gameGroup.POST("", controllers.CreateGame)       // 创建游戏
+				gameGroup.PUT("/:id", controllers.UpdateGame)    // 更新游戏
+				gameGroup.DELETE("/:id", controllers.DeleteGame) // 删除游戏
+			}
 		}
 	}
 }

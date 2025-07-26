@@ -151,7 +151,8 @@ func GetPublisherList(query dto.PublisherQuery) (int64, []*dto.PublisherRes, err
 	}
 
 	// 转换为响应结构体数组
-	var result []*dto.PublisherRes
+	// 初始化为空切片而不是nil，确保JSON序列化为[]而不是null
+	result := make([]*dto.PublisherRes, 0)
 	for _, publisher := range publishers {
 		// 创建单个响应对象
 		res := &dto.PublisherRes{
