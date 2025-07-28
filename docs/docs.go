@@ -778,7 +778,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "管理员认证"
+                    "[Admin]管理员认证"
                 ],
                 "summary": "管理员登录",
                 "parameters": [
@@ -842,7 +842,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "管理员认证"
+                    "[Admin]管理员认证"
                 ],
                 "summary": "管理员登出",
                 "responses": {
@@ -876,7 +876,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "获取菜单列表",
                 "parameters": [
@@ -961,7 +961,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "创建菜单",
                 "parameters": [
@@ -1012,7 +1012,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "获取菜单路由",
                 "responses": {
@@ -1061,7 +1061,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "获取菜单树",
                 "responses": {
@@ -1110,7 +1110,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "获取菜单详情",
                 "parameters": [
@@ -1175,7 +1175,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "更新菜单",
                 "parameters": [
@@ -1237,7 +1237,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "菜单管理"
+                    "[Admin]菜单管理"
                 ],
                 "summary": "删除菜单",
                 "parameters": [
@@ -1612,7 +1612,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "管理员认证"
+                    "[Admin]管理员认证"
                 ],
                 "summary": "创建管理员账号",
                 "parameters": [
@@ -1663,7 +1663,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "获取角色列表",
                 "parameters": [
@@ -1747,7 +1747,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "创建角色",
                 "parameters": [
@@ -1798,7 +1798,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "获取管理员角色信息",
                 "parameters": [
@@ -1865,7 +1865,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "分配管理员角色",
                 "parameters": [
@@ -1922,7 +1922,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "角色授权",
                 "parameters": [
@@ -1979,7 +1979,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "获取角色选择列表",
                 "responses": {
@@ -2028,7 +2028,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "获取角色详情",
                 "parameters": [
@@ -2093,7 +2093,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "更新角色",
                 "parameters": [
@@ -2155,7 +2155,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色管理"
+                    "[Admin]角色管理"
                 ],
                 "summary": "删除角色",
                 "parameters": [
@@ -2332,7 +2332,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[API]用户管理"
+                    "[API]用户认证"
                 ],
                 "summary": "获取用户信息",
                 "responses": {

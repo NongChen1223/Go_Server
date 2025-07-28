@@ -1527,7 +1527,7 @@ paths:
             $ref: '#/definitions/common.Response'
       summary: 管理员登录
       tags:
-      - 管理员认证
+      - '[Admin]管理员认证'
   /v1/admin/logout:
     post:
       consumes:
@@ -1548,7 +1548,7 @@ paths:
       - BearerAuth: []
       summary: 管理员登出
       tags:
-      - 管理员认证
+      - '[Admin]管理员认证'
   /v1/admin/menus:
     get:
       consumes:
@@ -1601,7 +1601,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单列表
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
     post:
       consumes:
       - application/json
@@ -1632,7 +1632,7 @@ paths:
       - BearerAuth: []
       summary: 创建菜单
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
   /v1/admin/menus/{id}:
     delete:
       consumes:
@@ -1667,7 +1667,7 @@ paths:
       - BearerAuth: []
       summary: 删除菜单
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
     get:
       consumes:
       - application/json
@@ -1706,7 +1706,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单详情
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
     put:
       consumes:
       - application/json
@@ -1746,7 +1746,7 @@ paths:
       - BearerAuth: []
       summary: 更新菜单
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
   /v1/admin/menus/routers:
     get:
       consumes:
@@ -1774,7 +1774,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单路由
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
   /v1/admin/menus/tree:
     get:
       consumes:
@@ -1802,7 +1802,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单树
       tags:
-      - 菜单管理
+      - '[Admin]菜单管理'
   /v1/admin/publishers:
     get:
       consumes:
@@ -2034,7 +2034,7 @@ paths:
       - BearerAuth: []
       summary: 创建管理员账号
       tags:
-      - 管理员认证
+      - '[Admin]管理员认证'
   /v1/admin/roles:
     get:
       consumes:
@@ -2087,7 +2087,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色列表
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
     post:
       consumes:
       - application/json
@@ -2118,7 +2118,7 @@ paths:
       - BearerAuth: []
       summary: 创建角色
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/admin/roles/{id}:
     delete:
       consumes:
@@ -2153,7 +2153,7 @@ paths:
       - BearerAuth: []
       summary: 删除角色
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
     get:
       consumes:
       - application/json
@@ -2192,7 +2192,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色详情
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
     put:
       consumes:
       - application/json
@@ -2232,7 +2232,7 @@ paths:
       - BearerAuth: []
       summary: 更新角色
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/admin/roles/admin/{admin_id}:
     get:
       consumes:
@@ -2272,7 +2272,7 @@ paths:
       - BearerAuth: []
       summary: 获取管理员角色信息
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/admin/roles/assign:
     post:
       consumes:
@@ -2308,7 +2308,7 @@ paths:
       - BearerAuth: []
       summary: 分配管理员角色
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/admin/roles/auth:
     post:
       consumes:
@@ -2344,7 +2344,7 @@ paths:
       - BearerAuth: []
       summary: 角色授权
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/admin/roles/select:
     get:
       consumes:
@@ -2372,7 +2372,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色选择列表
       tags:
-      - 角色管理
+      - '[Admin]角色管理'
   /v1/api/auth/login:
     post:
       consumes:
@@ -2476,7 +2476,7 @@ paths:
       - BearerAuth: []
       summary: 获取用户信息
       tags:
-      - '[API]用户管理'
+      - '[API]用户认证'
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" followed by a space and JWT token.

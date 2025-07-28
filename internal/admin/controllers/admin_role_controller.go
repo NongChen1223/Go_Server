@@ -12,7 +12,7 @@ import (
 // GetRoleList 获取角色列表
 // @Summary 获取角色列表
 // @Description 获取系统角色列表，支持分页和条件查询
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -45,7 +45,7 @@ func GetRoleList(c *gin.Context) {
 // GetRoleDetail 获取角色详情
 // @Summary 获取角色详情
 // @Description 根据角色ID获取角色的详细信息，包括菜单权限
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -76,7 +76,7 @@ func GetRoleDetail(c *gin.Context) {
 // CreateRole 创建角色
 // @Summary 创建角色
 // @Description 创建新的系统角色
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -112,7 +112,7 @@ func CreateRole(c *gin.Context) {
 // UpdateRole 更新角色
 // @Summary 更新角色
 // @Description 更新系统角色信息
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -160,7 +160,7 @@ func UpdateRole(c *gin.Context) {
 // DeleteRole 删除角色
 // @Summary 删除角色
 // @Description 删除系统角色
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -191,7 +191,7 @@ func DeleteRole(c *gin.Context) {
 // GetRoleSelect 获取角色选择列表
 // @Summary 获取角色选择列表
 // @Description 获取可用的角色列表，用于下拉选择
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -212,7 +212,7 @@ func GetRoleSelect(c *gin.Context) {
 // AuthRole 角色授权
 // @Summary 角色授权
 // @Description 为角色分配菜单权限
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -249,7 +249,7 @@ func AuthRole(c *gin.Context) {
 // AssignAdminRole 分配管理员角色
 // @Summary 分配管理员角色
 // @Description 为管理员分配角色
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -286,7 +286,7 @@ func AssignAdminRole(c *gin.Context) {
 // GetAdminRole 获取管理员角色信息
 // @Summary 获取管理员角色信息
 // @Description 获取指定管理员的角色信息
-// @Tags 角色管理
+// @Tags [Admin]角色管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth

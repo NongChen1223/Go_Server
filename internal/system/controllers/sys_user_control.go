@@ -65,7 +65,7 @@ func SysUserLogin(c *gin.Context) {
 // SysUserInfo 获取用户信息
 // @Summary 获取用户信息
 // @Description 获取当前登录用户的详细信息
-// @Tags [API]用户管理
+// @Tags [API]用户认证
 // @Accept json
 // @Produce json
 // @Security BearerAuth
