@@ -5,6 +5,7 @@ import (
 	"go_server/config"
 	adminRouters "go_server/internal/admin/routers"
 	systemRouters "go_server/internal/system/routers"
+	"go_server/middleware"
 
 	// Swagger相关导入
 	"github.com/swaggo/files"
@@ -18,6 +19,11 @@ import (
  */
 func SetRouter() *gin.Engine {
 	r := gin.Default()
+
+	// 只在开发环境启用 CORS 中间件
+	if gin.Mode() != gin.ReleaseMode {
+		r.Use(middleware.CORSMiddleware())
+	}
 
 	// 创建 v1 版本的路由组
 	v1 := r.Group("/v1")

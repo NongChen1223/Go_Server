@@ -61,6 +61,32 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 				gameGroup.PUT("/:id", controllers.UpdateGame)    // 更新游戏
 				gameGroup.DELETE("/:id", controllers.DeleteGame) // 删除游戏
 			}
+
+			// 菜单管理路由组
+			menuGroup := authAdmin.Group("/menus")
+			{
+				menuGroup.GET("", controllers.GetMenuList)            // 获取菜单列表
+				menuGroup.GET("/tree", controllers.GetMenuTree)       // 获取菜单树
+				menuGroup.GET("/routers", controllers.GetMenuRouters) // 获取菜单路由
+				menuGroup.GET("/:id", controllers.GetMenuDetail)      // 获取菜单详情
+				menuGroup.POST("", controllers.CreateMenu)            // 创建菜单
+				menuGroup.PUT("/:id", controllers.UpdateMenu)         // 更新菜单
+				menuGroup.DELETE("/:id", controllers.DeleteMenu)      // 删除菜单
+			}
+
+			// 角色管理路由组
+			roleGroup := authAdmin.Group("/roles")
+			{
+				roleGroup.GET("", controllers.GetRoleList)                  // 获取角色列表
+				roleGroup.GET("/select", controllers.GetRoleSelect)         // 获取角色选择列表
+				roleGroup.GET("/:id", controllers.GetRoleDetail)            // 获取角色详情
+				roleGroup.GET("/admin/:admin_id", controllers.GetAdminRole) // 获取管理员角色信息
+				roleGroup.POST("", controllers.CreateRole)                  // 创建角色
+				roleGroup.POST("/auth", controllers.AuthRole)               // 角色授权
+				roleGroup.POST("/assign", controllers.AssignAdminRole)      // 分配管理员角色
+				roleGroup.PUT("/:id", controllers.UpdateRole)               // 更新角色
+				roleGroup.DELETE("/:id", controllers.DeleteRole)            // 删除角色
+			}
 		}
 	}
 }

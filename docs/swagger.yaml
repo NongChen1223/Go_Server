@@ -17,6 +17,20 @@ definitions:
         description: 总条数
         type: integer
     type: object
+  common.PageResult:
+    properties:
+      current:
+        description: 当前页码
+        type: integer
+      records:
+        description: 数据列表
+      size:
+        description: 每页数量
+        type: integer
+      total:
+        description: 总页数
+        type: integer
+    type: object
   common.Response:
     properties:
       code:
@@ -92,6 +106,33 @@ definitions:
     - password
     - real_name
     type: object
+  dto.AdminRoleReq:
+    type: object
+  dto.AdminRoleRes:
+    properties:
+      admin_id:
+        description: 管理员ID
+        type: integer
+      admin_name:
+        description: 管理员账号
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      real_name:
+        description: 真实姓名
+        type: string
+      role_ids:
+        description: 角色ID列表
+        items:
+          type: integer
+        type: array
+      roles:
+        description: 角色列表
+        items:
+          $ref: '#/definitions/dto.RoleSelectRes'
+        type: array
+    type: object
   dto.DictTypeReq:
     properties:
       dict_id:
@@ -143,6 +184,273 @@ definitions:
         description: 更新时间
         type: string
     type: object
+  dto.GameCoverReq:
+    properties:
+      cover_id:
+        description: 封面ID，更新时需要
+        type: integer
+      cover_url:
+        description: 封面图片URL，必填
+        type: string
+      is_main:
+        description: 是否主封面，必填
+        enum:
+        - 0
+        - 1
+        type: integer
+      sort:
+        description: 排序，可选
+        type: integer
+    required:
+    - cover_url
+    type: object
+  dto.GameCoverRes:
+    properties:
+      cover_id:
+        description: 封面ID
+        type: integer
+      cover_url:
+        description: 封面图片URL
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      is_main:
+        description: 是否主封面
+        type: integer
+      sort:
+        description: 排序
+        type: integer
+    type: object
+  dto.GameLanguageInfo:
+    properties:
+      dict_code:
+        description: 字典编码
+        type: integer
+      dict_label:
+        description: 字典标签
+        type: string
+      dict_value:
+        description: 字典值
+        type: string
+    type: object
+  dto.GamePlatformInfo:
+    properties:
+      dict_code:
+        description: 字典编码
+        type: integer
+      dict_label:
+        description: 字典标签
+        type: string
+      dict_value:
+        description: 字典值
+        type: string
+    type: object
+  dto.GameReq:
+    properties:
+      covers:
+        description: 封面和截图
+        items:
+          $ref: '#/definitions/dto.GameCoverReq'
+        type: array
+      demo_video:
+        description: 游戏演示视频链接，可选
+        type: string
+      description:
+        description: 游戏介绍，可选
+        type: string
+      game_id:
+        description: 游戏ID，更新时需要，创建时忽略
+        type: integer
+      language_codes:
+        description: 游戏语言编码数组
+        items:
+          type: integer
+        type: array
+      name_en:
+        description: 游戏英文名称，可选
+        type: string
+      name_zh:
+        description: 游戏中文名称，必填
+        type: string
+      platform_codes:
+        description: 游戏平台编码数组
+        items:
+          type: integer
+        type: array
+      price:
+        description: 游戏价格，可选
+        type: number
+      publisher_id:
+        description: 游戏厂商ID，可选
+        type: integer
+      rating:
+        description: 游戏评分，可选
+        type: number
+      release_date:
+        description: 游戏发布日期，可选
+        type: string
+      screenshots:
+        description: 游戏截图数组
+        items:
+          $ref: '#/definitions/dto.GameScreenshotReq'
+        type: array
+      shutdown_date:
+        description: 游戏停服日期，可选
+        type: string
+      size:
+        description: 游戏大小，可选
+        type: string
+      status:
+        description: 状态，必填，只能是0或1
+        enum:
+        - 0
+        - 1
+        type: integer
+      studio_id:
+        description: 游戏工作室ID，可选
+        type: integer
+      type_codes:
+        description: 关联数据
+        items:
+          type: integer
+        type: array
+    required:
+    - name_zh
+    - status
+    type: object
+  dto.GameRes:
+    properties:
+      comment_count:
+        description: 游戏评论数量
+        type: integer
+      covers:
+        description: 游戏封面
+        items:
+          $ref: '#/definitions/dto.GameCoverRes'
+        type: array
+      create_by:
+        description: 创建者
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      demo_video:
+        description: 游戏演示视频链接
+        type: string
+      description:
+        description: 游戏介绍
+        type: string
+      game_id:
+        description: 游戏ID
+        type: integer
+      languages:
+        description: 游戏语言信息
+        items:
+          $ref: '#/definitions/dto.GameLanguageInfo'
+        type: array
+      like_count:
+        description: 游戏点赞数量
+        type: integer
+      name_en:
+        description: 游戏英文名称
+        type: string
+      name_zh:
+        description: 游戏中文名称
+        type: string
+      platforms:
+        description: 游戏平台信息
+        items:
+          $ref: '#/definitions/dto.GamePlatformInfo'
+        type: array
+      price:
+        description: 游戏价格
+        type: number
+      publisher_id:
+        description: 游戏厂商ID
+        type: integer
+      publisher_name:
+        description: 关联数据
+        type: string
+      rating:
+        description: 游戏评分
+        type: number
+      release_date:
+        description: 游戏发布日期
+        type: string
+      screenshots:
+        description: 游戏截图
+        items:
+          $ref: '#/definitions/dto.GameScreenshotRes'
+        type: array
+      shutdown_date:
+        description: 游戏停服日期
+        type: string
+      size:
+        description: 游戏大小
+        type: string
+      status:
+        description: 状态
+        type: integer
+      studio_id:
+        description: 游戏工作室ID
+        type: integer
+      studio_name:
+        description: 工作室名称
+        type: string
+      types:
+        description: 游戏类型信息
+        items:
+          $ref: '#/definitions/dto.GameTypeInfo'
+        type: array
+      update_by:
+        description: 更新者
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  dto.GameScreenshotReq:
+    properties:
+      screenshot_id:
+        description: 截图ID，更新时需要
+        type: integer
+      screenshot_url:
+        description: 截图URL，必填
+        type: string
+      sort:
+        description: 排序，可选
+        type: integer
+    required:
+    - screenshot_url
+    type: object
+  dto.GameScreenshotRes:
+    properties:
+      create_time:
+        description: 创建时间
+        type: string
+      screenshot_id:
+        description: 截图ID
+        type: integer
+      screenshot_url:
+        description: 截图URL
+        type: string
+      sort:
+        description: 排序
+        type: integer
+    type: object
+  dto.GameTypeInfo:
+    properties:
+      dict_code:
+        description: 字典编码
+        type: integer
+      dict_label:
+        description: 字典标签
+        type: string
+      dict_value:
+        description: 字典值
+        type: string
+    type: object
   dto.LoginReq:
     properties:
       password:
@@ -154,6 +462,384 @@ definitions:
     required:
     - password
     - user_name
+    type: object
+  dto.MenuCreateReq:
+    properties:
+      component:
+        description: 组件路径
+        example: system/user/index
+        maxLength: 255
+        type: string
+      icon:
+        description: 菜单图标
+        example: user
+        maxLength: 100
+        type: string
+      is_cache:
+        description: 是否缓存（0不缓存 1缓存）
+        enum:
+        - 0
+        - 1
+        example: 0
+        type: integer
+      is_frame:
+        description: 是否为外链（0是 1否）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      menu_name:
+        description: 菜单名称
+        example: 用户管理
+        maxLength: 50
+        minLength: 1
+        type: string
+      menu_type:
+        description: 菜单类型（M目录 C菜单 F按钮）
+        enum:
+        - M
+        - C
+        - F
+        example: C
+        type: string
+      order_num:
+        description: 显示顺序
+        example: 1
+        minimum: 0
+        type: integer
+      parent_id:
+        description: 父菜单ID
+        example: 0
+        minimum: 0
+        type: integer
+      path:
+        description: 路由地址
+        example: /system/user
+        maxLength: 200
+        type: string
+      perms:
+        description: 权限标识
+        example: system:user:list
+        maxLength: 100
+        type: string
+      query:
+        description: 路由参数
+        example: userId=1
+        maxLength: 255
+        type: string
+      remark:
+        description: 备注
+        example: 用户管理菜单
+        maxLength: 500
+        type: string
+      status:
+        description: 菜单状态（0停用 1正常）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      visible:
+        description: 菜单状态（0隐藏 1显示）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - menu_name
+    - menu_type
+    type: object
+  dto.MenuDetailRes:
+    properties:
+      ancestors:
+        description: 祖级列表
+        type: string
+      component:
+        description: 组件路径
+        type: string
+      create_by:
+        description: 创建者
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      icon:
+        description: 菜单图标
+        type: string
+      is_cache:
+        description: 是否缓存
+        type: integer
+      is_frame:
+        description: 是否为外链
+        type: integer
+      menu_id:
+        description: 菜单ID
+        type: integer
+      menu_name:
+        description: 菜单名称
+        type: string
+      menu_type:
+        description: 菜单类型
+        type: string
+      order_num:
+        description: 显示顺序
+        type: integer
+      parent_id:
+        description: 父菜单ID
+        type: integer
+      path:
+        description: 路由地址
+        type: string
+      perms:
+        description: 权限标识
+        type: string
+      query:
+        description: 路由参数
+        type: string
+      remark:
+        description: 备注
+        type: string
+      status:
+        description: 菜单状态（0停用 1正常）
+        type: integer
+      update_by:
+        description: 更新者
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+      visible:
+        description: 菜单状态（0隐藏 1显示）
+        type: integer
+    type: object
+  dto.MenuListRes:
+    properties:
+      ancestors:
+        description: 祖级列表
+        type: string
+      children:
+        description: 子菜单列表
+        items:
+          $ref: '#/definitions/dto.MenuListRes'
+        type: array
+      component:
+        description: 组件路径
+        type: string
+      create_by:
+        description: 创建者
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      icon:
+        description: 菜单图标
+        type: string
+      is_cache:
+        description: 是否缓存
+        type: integer
+      is_frame:
+        description: 是否为外链
+        type: integer
+      menu_id:
+        description: 菜单ID
+        type: integer
+      menu_name:
+        description: 菜单名称
+        type: string
+      menu_type:
+        description: 菜单类型
+        type: string
+      order_num:
+        description: 显示顺序
+        type: integer
+      parent_id:
+        description: 父菜单ID
+        type: integer
+      path:
+        description: 路由地址
+        type: string
+      perms:
+        description: 权限标识
+        type: string
+      query:
+        description: 路由参数
+        type: string
+      remark:
+        description: 备注
+        type: string
+      status:
+        description: 菜单状态（0停用 1正常）
+        type: integer
+      update_by:
+        description: 更新者
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+      visible:
+        description: 菜单状态（0隐藏 1显示）
+        type: integer
+    type: object
+  dto.MenuRouterMeta:
+    properties:
+      icon:
+        description: 图标
+        type: string
+      link:
+        description: 外链地址
+        type: string
+      noCache:
+        description: 是否不缓存
+        type: boolean
+      title:
+        description: 路由标题
+        type: string
+    type: object
+  dto.MenuRouterRes:
+    properties:
+      children:
+        description: 子路由
+        items:
+          $ref: '#/definitions/dto.MenuRouterRes'
+        type: array
+      component:
+        description: 组件路径
+        type: string
+      hidden:
+        description: 是否隐藏路由
+        type: boolean
+      meta:
+        allOf:
+        - $ref: '#/definitions/dto.MenuRouterMeta'
+        description: 路由元信息
+      name:
+        description: 路由名称
+        type: string
+      path:
+        description: 路由路径
+        type: string
+      query:
+        description: 路由参数
+        type: string
+      redirect:
+        description: 重定向地址
+        type: string
+    type: object
+  dto.MenuTreeRes:
+    properties:
+      children:
+        description: 子菜单列表
+        items:
+          $ref: '#/definitions/dto.MenuTreeRes'
+        type: array
+      menu_id:
+        description: 菜单ID
+        type: integer
+      menu_name:
+        description: 菜单名称
+        type: string
+      menu_type:
+        description: 菜单类型
+        type: string
+      parent_id:
+        description: 父菜单ID
+        type: integer
+    type: object
+  dto.MenuUpdateReq:
+    properties:
+      component:
+        description: 组件路径
+        example: system/user/index
+        maxLength: 255
+        type: string
+      icon:
+        description: 菜单图标
+        example: user
+        maxLength: 100
+        type: string
+      is_cache:
+        description: 是否缓存（0不缓存 1缓存）
+        enum:
+        - 0
+        - 1
+        example: 0
+        type: integer
+      is_frame:
+        description: 是否为外链（0是 1否）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      menu_id:
+        description: 菜单ID
+        example: 1
+        minimum: 1
+        type: integer
+      menu_name:
+        description: 菜单名称
+        example: 用户管理
+        maxLength: 50
+        minLength: 1
+        type: string
+      menu_type:
+        description: 菜单类型（M目录 C菜单 F按钮）
+        enum:
+        - M
+        - C
+        - F
+        example: C
+        type: string
+      order_num:
+        description: 显示顺序
+        example: 1
+        minimum: 0
+        type: integer
+      parent_id:
+        description: 父菜单ID
+        example: 0
+        minimum: 0
+        type: integer
+      path:
+        description: 路由地址
+        example: /system/user
+        maxLength: 200
+        type: string
+      perms:
+        description: 权限标识
+        example: system:user:list
+        maxLength: 100
+        type: string
+      query:
+        description: 路由参数
+        example: userId=1
+        maxLength: 255
+        type: string
+      remark:
+        description: 备注
+        example: 用户管理菜单
+        maxLength: 500
+        type: string
+      status:
+        description: 菜单状态（0停用 1正常）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      visible:
+        description: 菜单状态（0隐藏 1显示）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - menu_id
+    - menu_name
+    - menu_type
     type: object
   dto.PublisherReq:
     properties:
@@ -233,6 +919,74 @@ definitions:
     - email
     - password
     - user_name
+    type: object
+  dto.RoleAuthReq:
+    type: object
+  dto.RoleCreateReq:
+    type: object
+  dto.RoleDetailRes:
+    properties:
+      create_by:
+        description: 创建者
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      data_scope:
+        description: 数据范围
+        type: integer
+      data_scope_name:
+        description: 数据范围名称
+        type: string
+      dept_check_strictly:
+        description: 部门树选择项是否关联显示
+        type: integer
+      menu_check_strictly:
+        description: 菜单树选择项是否关联显示
+        type: integer
+      menu_ids:
+        description: 菜单ID列表
+        items:
+          type: integer
+        type: array
+      remark:
+        description: 备注
+        type: string
+      role_id:
+        description: 角色ID
+        type: integer
+      role_key:
+        description: 角色权限字符串
+        type: string
+      role_name:
+        description: 角色名称
+        type: string
+      role_sort:
+        description: 显示顺序
+        type: integer
+      status:
+        description: 角色状态
+        type: integer
+      update_by:
+        description: 更新者
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  dto.RoleSelectRes:
+    properties:
+      role_id:
+        description: 角色ID
+        type: integer
+      role_key:
+        description: 角色权限字符串
+        type: string
+      role_name:
+        description: 角色名称
+        type: string
+    type: object
+  dto.RoleUpdateReq:
     type: object
   dto.UserInfoRes:
     properties:
@@ -514,6 +1268,230 @@ paths:
       summary: 更新字典类型
       tags:
       - '[Admin]字典管理'
+  /v1/admin/games:
+    get:
+      consumes:
+      - application/json
+      description: 分页获取游戏列表，支持多种条件筛选
+      parameters:
+      - description: 游戏中文名称（模糊查询）
+        in: query
+        name: name_zh
+        type: string
+      - description: 游戏英文名称（模糊查询）
+        in: query
+        name: name_en
+        type: string
+      - description: 厂商ID（精确查询）
+        in: query
+        name: publisher_id
+        type: integer
+      - description: 工作室ID（精确查询）
+        in: query
+        name: studio_id
+        type: integer
+      - description: 游戏类型编码（精确查询）
+        in: query
+        name: type_code
+        type: integer
+      - description: 游戏平台编码（精确查询）
+        in: query
+        name: platform_code
+        type: integer
+      - description: 游戏语言编码（精确查询）
+        in: query
+        name: language_code
+        type: integer
+      - description: 最低评分
+        in: query
+        name: min_rating
+        type: number
+      - description: 最高评分
+        in: query
+        name: max_rating
+        type: number
+      - description: 最低价格
+        in: query
+        name: min_price
+        type: number
+      - description: 最高价格
+        in: query
+        name: max_price
+        type: number
+      - description: 状态（0停用 1正常）
+        in: query
+        name: status
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page_num
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.PageResponse'
+            - properties:
+                records:
+                  items:
+                    $ref: '#/definitions/dto.GameRes'
+                  type: array
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取游戏列表
+      tags:
+      - '[Admin]游戏管理'
+    post:
+      consumes:
+      - application/json
+      description: 创建新的游戏记录，包括基本信息和关联数据
+      parameters:
+      - description: 游戏创建请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GameReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建游戏
+      tags:
+      - '[Admin]游戏管理'
+  /v1/admin/games/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据游戏ID删除游戏及其所有关联数据
+      parameters:
+      - description: 游戏ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除游戏
+      tags:
+      - '[Admin]游戏管理'
+    get:
+      consumes:
+      - application/json
+      description: 根据游戏ID获取游戏的详细信息，包括所有关联数据
+      parameters:
+      - description: 游戏ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.GameRes'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取游戏详情
+      tags:
+      - '[Admin]游戏管理'
+    put:
+      consumes:
+      - application/json
+      description: 更新游戏信息，包括基本信息和关联数据
+      parameters:
+      - description: 游戏ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 游戏更新请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GameReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新游戏
+      tags:
+      - '[Admin]游戏管理'
   /v1/admin/login:
     post:
       consumes:
@@ -571,6 +1549,260 @@ paths:
       summary: 管理员登出
       tags:
       - 管理员认证
+  /v1/admin/menus:
+    get:
+      consumes:
+      - application/json
+      description: 获取系统菜单列表，支持树形结构展示和条件查询
+      parameters:
+      - description: 菜单名称
+        in: query
+        name: menu_name
+        type: string
+      - description: 菜单状态（0停用 1正常）
+        in: query
+        name: status
+        type: integer
+      - description: 菜单类型（M目录 C菜单 F按钮）
+        in: query
+        name: menu_type
+        type: string
+      - description: 父菜单ID
+        in: query
+        name: parent_id
+        type: integer
+      - description: 菜单状态（0隐藏 1显示）
+        in: query
+        name: visible
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.MenuListRes'
+                  type: array
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取菜单列表
+      tags:
+      - 菜单管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的系统菜单
+      parameters:
+      - description: 创建菜单请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MenuCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建菜单
+      tags:
+      - 菜单管理
+  /v1/admin/menus/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除系统菜单
+      parameters:
+      - description: 菜单ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 菜单不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除菜单
+      tags:
+      - 菜单管理
+    get:
+      consumes:
+      - application/json
+      description: 根据菜单ID获取菜单的详细信息
+      parameters:
+      - description: 菜单ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.MenuDetailRes'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 菜单不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取菜单详情
+      tags:
+      - 菜单管理
+    put:
+      consumes:
+      - application/json
+      description: 更新系统菜单信息
+      parameters:
+      - description: 菜单ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新菜单请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MenuUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 菜单不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新菜单
+      tags:
+      - 菜单管理
+  /v1/admin/menus/routers:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前管理员的菜单路由信息，用于前端动态路由生成
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.MenuRouterRes'
+                  type: array
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取菜单路由
+      tags:
+      - 菜单管理
+  /v1/admin/menus/tree:
+    get:
+      consumes:
+      - application/json
+      description: 获取菜单树形结构，用于角色分配权限时的选择
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.MenuTreeRes'
+                  type: array
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取菜单树
+      tags:
+      - 菜单管理
   /v1/admin/publishers:
     get:
       consumes:
@@ -803,6 +2035,344 @@ paths:
       summary: 创建管理员账号
       tags:
       - 管理员认证
+  /v1/admin/roles:
+    get:
+      consumes:
+      - application/json
+      description: 获取系统角色列表，支持分页和条件查询
+      parameters:
+      - description: 角色名称
+        in: query
+        name: role_name
+        type: string
+      - description: 角色权限字符串
+        in: query
+        name: role_key
+        type: string
+      - description: 角色状态（0停用 1正常）
+        in: query
+        name: status
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/common.PageResult'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取角色列表
+      tags:
+      - 角色管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的系统角色
+      parameters:
+      - description: 创建角色请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RoleCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建角色
+      tags:
+      - 角色管理
+  /v1/admin/roles/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除系统角色
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除角色
+      tags:
+      - 角色管理
+    get:
+      consumes:
+      - application/json
+      description: 根据角色ID获取角色的详细信息，包括菜单权限
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.RoleDetailRes'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取角色详情
+      tags:
+      - 角色管理
+    put:
+      consumes:
+      - application/json
+      description: 更新系统角色信息
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新角色请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RoleUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新角色
+      tags:
+      - 角色管理
+  /v1/admin/roles/admin/{admin_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定管理员的角色信息
+      parameters:
+      - description: 管理员ID
+        in: path
+        name: admin_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AdminRoleRes'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 管理员不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取管理员角色信息
+      tags:
+      - 角色管理
+  /v1/admin/roles/assign:
+    post:
+      consumes:
+      - application/json
+      description: 为管理员分配角色
+      parameters:
+      - description: 管理员角色分配请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AdminRoleReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分配成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 管理员不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 分配管理员角色
+      tags:
+      - 角色管理
+  /v1/admin/roles/auth:
+    post:
+      consumes:
+      - application/json
+      description: 为角色分配菜单权限
+      parameters:
+      - description: 角色授权请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RoleAuthReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 授权成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 角色授权
+      tags:
+      - 角色管理
+  /v1/admin/roles/select:
+    get:
+      consumes:
+      - application/json
+      description: 获取可用的角色列表，用于下拉选择
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.RoleSelectRes'
+                  type: array
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取角色选择列表
+      tags:
+      - 角色管理
   /v1/api/auth/login:
     post:
       consumes:

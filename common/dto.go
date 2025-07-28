@@ -66,3 +66,12 @@ func (q *PageQuery) GetDefaultPage() {
 func (q *PageQuery) GetOffset() int {
 	return (q.PageNum - 1) * q.PageSize
 }
+
+// PageResult 通用分页结果
+// 用于返回分页查询的结果数据
+type PageResult struct {
+	Current int         `json:"current"` // 当前页码
+	Size    int         `json:"size"`    // 每页数量
+	Total   int         `json:"total"`   // 总页数
+	Records interface{} `json:"records"` // 数据列表
+}

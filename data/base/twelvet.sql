@@ -498,3 +498,260 @@ CREATE TABLE `sys_comment_like`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT ='评论点赞表 - 记录用户对评论的点赞，支持点赞和取消点赞';
+
+-- ----------------------------
+-- 系统菜单表 - 后台管理系统的菜单权限核心表
+-- 用途：存储后台管理系统的所有菜单项，包括页面菜单、按钮权限等
+-- 场景：后台菜单展示、权限控制、路由生成、按钮权限验证等
+-- 业务说明：采用树形结构设计，支持多级菜单，通过parent_id实现父子关系
+-- 权限模型：结合角色表实现RBAC权限控制，精确到按钮级别的权限管理
+-- 菜单类型：支持目录(M)、菜单(C)、按钮(F)三种类型，满足不同的权限控制需求
+-- ----------------------------
+CREATE TABLE `sys_menu`
+(
+    -- 主键字段：菜单的唯一标识
+    `menu_id`     bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '菜单ID - 主键，自动递增，唯一标识每个菜单项',
+
+    -- 层级关系字段：实现树形菜单结构
+    `parent_id`   bigint(20)   NOT NULL DEFAULT 0 COMMENT '父菜单ID - 0表示顶级菜单，其他值表示父菜单的menu_id，构建树形结构',
+    `ancestors`   varchar(50)  NOT NULL DEFAULT '' COMMENT '祖级列表 - 所有父级菜单ID的路径，如"0,1,2"，用于快速查询所有子菜单',
+
+    -- 显示信息字段：菜单的展示相关信息
+    `menu_name`   varchar(50)  NOT NULL COMMENT '菜单名称 - 显示在界面上的菜单文字，如"用户管理"、"系统设置"',
+    `order_num`   int(11)      NOT NULL DEFAULT 0 COMMENT '显示顺序 - 数字越小越靠前，控制同级菜单的排序',
+    `icon`        varchar(100)          DEFAULT '#' COMMENT '菜单图标 - 菜单项的图标标识，如"user"、"setting"，#表示无图标',
+
+    -- 路由信息字段：前端路由和组件相关
+    `path`        varchar(200)          DEFAULT '' COMMENT '路由地址 - 前端路由路径，如"/system/user"，空字符串表示不是路由菜单',
+    `component`   varchar(255)          DEFAULT NULL COMMENT '组件路径 - 前端组件的路径，如"system/user/index"，NULL表示不是页面组件',
+    `query`       varchar(255)          DEFAULT NULL COMMENT '路由参数 - 路由跳转时携带的参数，如"userId=1&status=1"',
+
+    -- 权限控制字段：菜单类型和权限标识
+    `menu_type`   char(1)      NOT NULL DEFAULT 'M' COMMENT '菜单类型 - M:目录(只做分组) C:菜单(对应页面) F:按钮(页面内按钮权限)',
+    `visible`     tinyint(1)   NOT NULL DEFAULT 1 COMMENT '菜单状态 - 0:隐藏(不显示在菜单中) 1:显示(正常显示)',
+    `status`      tinyint(1)   NOT NULL DEFAULT 1 COMMENT '菜单状态 - 0:停用(禁止访问) 1:正常(可以访问)',
+    `perms`       varchar(100)          DEFAULT NULL COMMENT '权限标识 - 权限字符串，如"system:user:list"，用于后端权限验证',
+
+    -- 外部链接字段：支持外部链接菜单
+    `is_frame`    tinyint(1)   NOT NULL DEFAULT 1 COMMENT '是否为外链 - 0:是外链(跳转到外部网站) 1:不是外链(内部路由)',
+
+    -- 缓存控制字段：前端页面缓存控制
+    `is_cache`    tinyint(1)   NOT NULL DEFAULT 0 COMMENT '是否缓存 - 0:不缓存(每次重新加载) 1:缓存(保持页面状态)',
+
+    -- 系统字段：数据管理和审计信息
+    `create_by`   varchar(64)           DEFAULT '' COMMENT '创建者 - 创建此菜单的管理员账号',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间 - 菜单创建时间，自动设置',
+    `update_by`   varchar(64)           DEFAULT '' COMMENT '更新者 - 最后修改此菜单的管理员账号',
+    `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间 - 最后修改时间，自动更新',
+    `remark`      varchar(500)          DEFAULT '' COMMENT '备注 - 菜单的详细说明，如使用场景、特殊权限等',
+
+    -- 主键定义
+    PRIMARY KEY (`menu_id`) COMMENT '主键索引 - 确保菜单ID的唯一性',
+
+    -- 业务索引：提高查询性能
+    INDEX `idx_parent_id` (`parent_id`) COMMENT '父菜单ID索引 - 加速查询某菜单的所有子菜单，构建菜单树时使用',
+    INDEX `idx_menu_type` (`menu_type`) COMMENT '菜单类型索引 - 加速按类型查询菜单，如只查询页面菜单或按钮权限',
+    INDEX `idx_status` (`status`) COMMENT '状态索引 - 加速按状态筛选菜单，如只查询正常状态的菜单',
+    INDEX `idx_visible` (`visible`) COMMENT '可见性索引 - 加速按可见性筛选菜单，构建前端菜单时使用'
+
+) ENGINE = InnoDB                                                                 -- InnoDB引擎支持事务
+  AUTO_INCREMENT = 1                                                              -- 自增起始值
+  CHARACTER SET = utf8mb4                                                         -- 字符集
+  COLLATE = utf8mb4_general_ci                                                    -- 排序规则
+  COMMENT ='系统菜单表 - 存储后台管理系统的菜单权限信息，支持树形结构和RBAC权限控制，精确到按钮级别的权限管理';
+
+-- ----------------------------
+-- 系统角色表 - 后台权限管理的核心表
+-- 用途：定义系统中的各种角色，如超级管理员、普通管理员、运营人员等
+-- 场景：角色管理、权限分配、用户角色绑定、权限验证等
+-- 业务说明：RBAC权限模型的核心组件，通过角色来组织权限，用户通过角色获得权限
+-- 权限继承：支持角色层级和权限继承，可以设置角色的数据权限范围
+-- 扩展性：预留了数据权限字段，支持行级数据权限控制
+-- ----------------------------
+CREATE TABLE `sys_role`
+(
+    -- 主键字段：角色的唯一标识
+    `role_id`             bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '角色ID - 主键，自动递增，唯一标识每个角色',
+
+    -- 基础信息字段：角色的基本信息
+    `role_name`           varchar(30)  NOT NULL COMMENT '角色名称 - 角色的显示名称，如"超级管理员"、"内容管理员"',
+    `role_key`            varchar(100) NOT NULL COMMENT '角色权限字符串 - 角色的唯一标识符，如"admin"、"editor"，用于程序中的权限判断',
+    `role_sort`           int(11)      NOT NULL DEFAULT 0 COMMENT '显示顺序 - 数字越小越靠前，控制角色列表的排序',
+
+    -- 权限范围字段：数据权限控制
+    `data_scope`          tinyint(1)   NOT NULL DEFAULT 1 COMMENT '数据范围 - 1:全部数据权限 2:自定数据权限 3:本部门数据权限 4:本部门及以下数据权限 5:仅本人数据权限',
+    `menu_check_strictly` tinyint(1)   NOT NULL DEFAULT 1 COMMENT '菜单树选择项是否关联显示 - 0:父子不互相关联显示 1:父子互相关联显示',
+    `dept_check_strictly` tinyint(1)   NOT NULL DEFAULT 1 COMMENT '部门树选择项是否关联显示 - 0:父子不互相关联显示 1:父子互相关联显示',
+
+    -- 状态控制字段：角色的启用状态
+    `status`              tinyint(1)   NOT NULL DEFAULT 1 COMMENT '角色状态 - 0:停用(该角色不可用) 1:正常(该角色可用)',
+    `del_flag`            char(1)               DEFAULT '0' COMMENT '删除标志 - 0:存在 2:已删除(软删除，保留数据用于审计)',
+
+    -- 系统字段：数据管理和审计信息
+    `create_by`           varchar(64)           DEFAULT '' COMMENT '创建者 - 创建此角色的管理员账号',
+    `create_time`         datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间 - 角色创建时间，自动设置',
+    `update_by`           varchar(64)           DEFAULT '' COMMENT '更新者 - 最后修改此角色的管理员账号',
+    `update_time`         datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间 - 最后修改时间，自动更新',
+    `remark`              varchar(500)          DEFAULT NULL COMMENT '备注 - 角色的详细说明，如职责范围、特殊权限等',
+
+    -- 主键定义
+    PRIMARY KEY (`role_id`) COMMENT '主键索引 - 确保角色ID的唯一性',
+
+    -- 唯一索引：确保角色标识的唯一性
+    UNIQUE KEY `uk_role_key` (`role_key`) COMMENT '角色权限字符串唯一索引 - 确保role_key不重复，保证权限判断的准确性',
+
+    -- 业务索引：提高查询性能
+    INDEX `idx_status` (`status`) COMMENT '状态索引 - 加速按状态查询角色，如只查询正常状态的角色'
+
+) ENGINE = InnoDB                                                                 -- InnoDB引擎
+  AUTO_INCREMENT = 1                                                              -- 自增起始值
+  CHARACTER SET = utf8mb4                                                         -- 字符集
+  COLLATE = utf8mb4_general_ci                                                    -- 排序规则
+  COMMENT ='系统角色表 - 定义系统中的各种角色，是RBAC权限模型的核心组件，支持数据权限和菜单权限的精细化控制';
+
+-- ----------------------------
+-- 角色和菜单关联表 - 实现角色与菜单权限的多对多关系
+-- 用途：建立角色和菜单之间的关联关系，实现基于角色的权限控制
+-- 场景：角色权限分配、权限验证、菜单权限查询等
+-- 业务说明：RBAC权限模型的关键组件，通过此表实现"角色拥有哪些菜单权限"的映射
+-- 权限粒度：支持页面级和按钮级权限控制，精确到每个操作按钮
+-- 数据特点：多对多关系，一个角色可以有多个菜单权限，一个菜单权限可以分配给多个角色
+-- ----------------------------
+CREATE TABLE `sys_role_menu`
+(
+    -- 主键字段：关联关系的唯一标识
+    `role_id` bigint(20) NOT NULL COMMENT '角色ID - 关联sys_role表，标识哪个角色',
+    `menu_id` bigint(20) NOT NULL COMMENT '菜单ID - 关联sys_menu表，标识哪个菜单权限',
+
+    -- 联合主键定义：确保同一角色不会重复分配同一菜单权限
+    PRIMARY KEY (`role_id`, `menu_id`) COMMENT '联合主键 - 确保角色和菜单的关联关系唯一，避免重复分配权限',
+
+    -- 外键索引：提高关联查询性能
+    INDEX `idx_role_id` (`role_id`) COMMENT '角色ID索引 - 加速"查询某角色拥有的所有菜单权限"的查询',
+    INDEX `idx_menu_id` (`menu_id`) COMMENT '菜单ID索引 - 加速"查询某菜单权限分配给了哪些角色"的查询'
+
+) ENGINE = InnoDB                                                                 -- InnoDB引擎支持外键约束
+  CHARACTER SET = utf8mb4                                                         -- 字符集
+  COLLATE = utf8mb4_general_ci                                                    -- 排序规则
+  COMMENT ='角色和菜单关联表 - 实现角色与菜单权限的多对多关系，是RBAC权限控制的核心映射表';
+
+-- ----------------------------
+-- 管理员和角色关联表 - 实现管理员与角色的多对多关系
+-- 用途：建立管理员和角色之间的关联关系，实现用户权限的分配
+-- 场景：用户角色分配、权限验证、用户权限查询等
+-- 业务说明：RBAC权限模型的用户层，通过此表实现"用户拥有哪些角色"的映射
+-- 权限继承：管理员通过角色间接获得菜单权限，支持一个用户拥有多个角色
+-- 灵活性：支持动态角色分配，可以随时调整用户的角色和权限
+-- ----------------------------
+CREATE TABLE `sys_admin_user_role`
+(
+    -- 主键字段：关联关系的唯一标识
+    `admin_id` bigint(20) NOT NULL COMMENT '管理员ID - 关联sys_admin_user表，标识哪个管理员',
+    `role_id`  bigint(20) NOT NULL COMMENT '角色ID - 关联sys_role表，标识哪个角色',
+
+    -- 联合主键定义：确保同一管理员不会重复分配同一角色
+    PRIMARY KEY (`admin_id`, `role_id`) COMMENT '联合主键 - 确保管理员和角色的关联关系唯一，避免重复分配角色',
+
+    -- 外键索引：提高关联查询性能
+    INDEX `idx_admin_id` (`admin_id`) COMMENT '管理员ID索引 - 加速"查询某管理员拥有的所有角色"的查询',
+    INDEX `idx_role_id` (`role_id`) COMMENT '角色ID索引 - 加速"查询某角色分配给了哪些管理员"的查询'
+
+) ENGINE = InnoDB                                                                 -- InnoDB引擎支持外键约束
+  CHARACTER SET = utf8mb4                                                         -- 字符集
+  COLLATE = utf8mb4_general_ci                                                    -- 排序规则
+  COMMENT ='管理员和角色关联表 - 实现管理员与角色的多对多关系，通过角色为管理员分配权限';
+
+-- ----------------------------
+-- 初始化系统菜单数据
+-- 说明：为后台管理系统预置基础的菜单结构，这些是系统必需的基础菜单
+-- 用途：定义后台管理系统的菜单树结构，包括系统管理、游戏管理等模块
+-- 菜单层级：采用三级菜单结构 - 一级目录、二级菜单、三级按钮权限
+-- 权限标识：perms字段采用"模块:功能:操作"的格式，如"system:user:list"
+-- 注意：这些数据是系统的基础数据，删除后会影响后台管理功能的正常使用
+-- ----------------------------
+INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `ancestors`, `menu_name`, `order_num`, `path`, `component`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `remark`)
+VALUES
+-- ========== 一级目录菜单 ==========
+(1, 0, '0', '系统管理', 1, 'system', NULL, 'M', 1, 1, '', 'system', 'admin', '系统管理目录'),
+(2, 0, '0', '游戏管理', 2, 'game', NULL, 'M', 1, 1, '', 'game', 'admin', '游戏管理目录'),
+
+-- ========== 系统管理二级菜单 ==========
+(100, 1, '0,1', '用户管理', 1, 'user', 'system/user/index', 'C', 1, 1, 'system:user:list', 'user', 'admin', '管理员用户管理菜单'),
+(101, 1, '0,1', '角色管理', 2, 'role', 'system/role/index', 'C', 1, 1, 'system:role:list', 'peoples', 'admin', '角色管理菜单'),
+(102, 1, '0,1', '菜单管理', 3, 'menu', 'system/menu/index', 'C', 1, 1, 'system:menu:list', 'tree-table', 'admin', '菜单管理菜单'),
+(103, 1, '0,1', '字典管理', 4, 'dict', 'system/dict/index', 'C', 1, 1, 'system:dict:list', 'dict', 'admin', '字典管理菜单'),
+
+-- ========== 游戏管理二级菜单 ==========
+(200, 2, '0,2', '游戏列表', 1, 'list', 'game/list/index', 'C', 1, 1, 'game:list:list', 'list', 'admin', '游戏列表管理菜单'),
+(201, 2, '0,2', '厂商管理', 2, 'publisher', 'game/publisher/index', 'C', 1, 1, 'game:publisher:list', 'company', 'admin', '游戏厂商管理菜单'),
+
+-- ========== 用户管理按钮权限 ==========
+(1000, 100, '0,1,100', '用户查询', 1, '', '', 'F', 1, 1, 'system:user:query', '#', 'admin', ''),
+(1001, 100, '0,1,100', '用户新增', 2, '', '', 'F', 1, 1, 'system:user:add', '#', 'admin', ''),
+(1002, 100, '0,1,100', '用户修改', 3, '', '', 'F', 1, 1, 'system:user:edit', '#', 'admin', ''),
+(1003, 100, '0,1,100', '用户删除', 4, '', '', 'F', 1, 1, 'system:user:remove', '#', 'admin', ''),
+
+-- ========== 角色管理按钮权限 ==========
+(1010, 101, '0,1,101', '角色查询', 1, '', '', 'F', 1, 1, 'system:role:query', '#', 'admin', ''),
+(1011, 101, '0,1,101', '角色新增', 2, '', '', 'F', 1, 1, 'system:role:add', '#', 'admin', ''),
+(1012, 101, '0,1,101', '角色修改', 3, '', '', 'F', 1, 1, 'system:role:edit', '#', 'admin', ''),
+(1013, 101, '0,1,101', '角色删除', 4, '', '', 'F', 1, 1, 'system:role:remove', '#', 'admin', ''),
+
+-- ========== 菜单管理按钮权限 ==========
+(1020, 102, '0,1,102', '菜单查询', 1, '', '', 'F', 1, 1, 'system:menu:query', '#', 'admin', ''),
+(1021, 102, '0,1,102', '菜单新增', 2, '', '', 'F', 1, 1, 'system:menu:add', '#', 'admin', ''),
+(1022, 102, '0,1,102', '菜单修改', 3, '', '', 'F', 1, 1, 'system:menu:edit', '#', 'admin', ''),
+(1023, 102, '0,1,102', '菜单删除', 4, '', '', 'F', 1, 1, 'system:menu:remove', '#', 'admin', '');
+
+-- ----------------------------
+-- 初始化系统角色数据
+-- 说明：为系统预置基础的角色，这些是系统运行必需的基础角色
+-- 角色层级：超级管理员拥有所有权限，普通管理员拥有部分权限
+-- 权限范围：通过data_scope字段控制数据权限范围
+-- 注意：超级管理员角色不可删除，是系统的最高权限角色
+-- ----------------------------
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `status`, `create_by`, `remark`)
+VALUES
+(1, '超级管理员', 'admin', 1, 1, 1, 'admin', '超级管理员角色，拥有系统所有权限，不可删除'),
+(2, '普通管理员', 'common', 2, 2, 1, 'admin', '普通管理员角色，拥有基础的管理权限');
+
+-- ----------------------------
+-- 初始化角色菜单关联数据
+-- 说明：为预置角色分配对应的菜单权限，建立角色与权限的映射关系
+-- 权限分配：超级管理员拥有所有菜单权限，普通管理员拥有基础的查询和管理权限
+-- 权限粒度：精确到按钮级别，可以控制每个操作按钮的显示和访问权限
+-- 扩展性：新增菜单后，需要在此处为对应角色分配权限
+-- ----------------------------
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
+VALUES
+-- ========== 超级管理员权限(拥有所有权限) ==========
+-- 一级目录权限
+(1, 1), (1, 2),
+-- 系统管理菜单权限
+(1, 100), (1, 101), (1, 102), (1, 103),
+-- 游戏管理菜单权限
+(1, 200), (1, 201),
+-- 用户管理按钮权限
+(1, 1000), (1, 1001), (1, 1002), (1, 1003),
+-- 角色管理按钮权限
+(1, 1010), (1, 1011), (1, 1012), (1, 1013),
+-- 菜单管理按钮权限
+(1, 1020), (1, 1021), (1, 1022), (1, 1023),
+
+-- ========== 普通管理员权限(基础权限) ==========
+-- 游戏管理目录和菜单权限
+(2, 2), (2, 200), (2, 201),
+-- 系统管理目录权限(仅查看)
+(2, 1), (2, 103),
+-- 基础查询权限
+(2, 1000), (2, 1010), (2, 1020);
+
+-- ----------------------------
+-- 初始化管理员角色关联数据
+-- 说明：为默认管理员账号分配超级管理员角色
+-- 权限继承：通过角色关联，管理员账号继承角色的所有菜单权限
+-- 多角色支持：一个管理员可以拥有多个角色，权限取并集
+-- ----------------------------
+INSERT INTO `sys_admin_user_role` (`admin_id`, `role_id`)
+VALUES
+(1, 1); -- 为admin账号分配超级管理员角色

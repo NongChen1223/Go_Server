@@ -8,6 +8,7 @@ import (
 	"go_server/global"
 	"go_server/models"
 	"go_server/utils"
+	"net/http"
 	"strings"
 )
 
@@ -97,6 +98,29 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 		// 将管理员信息存到上下文中
 		c.Set("admin_id", admin.AdminID)
 		c.Set("admin_name", admin.AdminName)
+
+		// 继续处理请求
+		c.Next()
+	}
+}
+
+// CORSMiddleware 跨域中间件
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 设置允许的源
+		c.Header("Access-Control-Allow-Origin", "*")
+		// 设置允许的请求方法
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		// 设置允许的请求头
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		// 设置允许凭证
+		c.Header("Access-Control-Allow-Credentials", "true")
+
+		// 处理预检请求
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusNoContent)
+			return
+		}
 
 		// 继续处理请求
 		c.Next()
