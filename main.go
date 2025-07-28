@@ -26,6 +26,15 @@ import (
 // @name Authorization
 // @description Type "Bearer" followed by a space and JWT token.
 
+// @tag.name Admin
+// @tag.description 后台管理相关接口，包含管理员认证、角色管理、菜单管理、字典管理、游戏管理等功能
+
+// @tag.name System
+// @tag.description 系统功能相关接口，包含前台用户认证、用户管理等功能
+
+// @tag.name Web
+// @tag.description 前台网站相关接口，包含首页展示、内容管理等功能
+
 func main() {
 	fmt.Println("Initializing application...") // 提前打印初始化信息
 	config.InitConfig()

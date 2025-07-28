@@ -1063,7 +1063,7 @@ paths:
       - BearerAuth: []
       summary: 根据类型获取字典数据
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
   /v1/admin/dict/types:
     get:
       consumes:
@@ -1118,7 +1118,7 @@ paths:
       - BearerAuth: []
       summary: 获取字典类型列表
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
     post:
       consumes:
       - application/json
@@ -1153,7 +1153,7 @@ paths:
       - BearerAuth: []
       summary: 创建字典类型
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
   /v1/admin/dict/types/{id}:
     delete:
       consumes:
@@ -1188,7 +1188,7 @@ paths:
       - BearerAuth: []
       summary: 删除字典类型
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
     get:
       consumes:
       - application/json
@@ -1227,7 +1227,7 @@ paths:
       - BearerAuth: []
       summary: 获取字典类型详情
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
     put:
       consumes:
       - application/json
@@ -1267,7 +1267,7 @@ paths:
       - BearerAuth: []
       summary: 更新字典类型
       tags:
-      - '[Admin]字典管理'
+      - Admin-字典管理
   /v1/admin/games:
     get:
       consumes:
@@ -1358,7 +1358,7 @@ paths:
       - BearerAuth: []
       summary: 获取游戏列表
       tags:
-      - '[Admin]游戏管理'
+      - Admin-游戏管理
     post:
       consumes:
       - application/json
@@ -1389,7 +1389,7 @@ paths:
       - BearerAuth: []
       summary: 创建游戏
       tags:
-      - '[Admin]游戏管理'
+      - Admin-游戏管理
   /v1/admin/games/{id}:
     delete:
       consumes:
@@ -1420,7 +1420,7 @@ paths:
       - BearerAuth: []
       summary: 删除游戏
       tags:
-      - '[Admin]游戏管理'
+      - Admin-游戏管理
     get:
       consumes:
       - application/json
@@ -1455,7 +1455,7 @@ paths:
       - BearerAuth: []
       summary: 获取游戏详情
       tags:
-      - '[Admin]游戏管理'
+      - Admin-游戏管理
     put:
       consumes:
       - application/json
@@ -1491,7 +1491,7 @@ paths:
       - BearerAuth: []
       summary: 更新游戏
       tags:
-      - '[Admin]游戏管理'
+      - Admin-游戏管理
   /v1/admin/login:
     post:
       consumes:
@@ -1527,7 +1527,7 @@ paths:
             $ref: '#/definitions/common.Response'
       summary: 管理员登录
       tags:
-      - '[Admin]管理员认证'
+      - Admin-管理员认证
   /v1/admin/logout:
     post:
       consumes:
@@ -1548,7 +1548,7 @@ paths:
       - BearerAuth: []
       summary: 管理员登出
       tags:
-      - '[Admin]管理员认证'
+      - Admin-管理员认证
   /v1/admin/menus:
     get:
       consumes:
@@ -1601,7 +1601,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单列表
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
     post:
       consumes:
       - application/json
@@ -1632,7 +1632,7 @@ paths:
       - BearerAuth: []
       summary: 创建菜单
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
   /v1/admin/menus/{id}:
     delete:
       consumes:
@@ -1667,7 +1667,7 @@ paths:
       - BearerAuth: []
       summary: 删除菜单
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
     get:
       consumes:
       - application/json
@@ -1706,7 +1706,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单详情
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
     put:
       consumes:
       - application/json
@@ -1746,7 +1746,7 @@ paths:
       - BearerAuth: []
       summary: 更新菜单
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
   /v1/admin/menus/routers:
     get:
       consumes:
@@ -1774,7 +1774,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单路由
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
   /v1/admin/menus/tree:
     get:
       consumes:
@@ -1802,7 +1802,7 @@ paths:
       - BearerAuth: []
       summary: 获取菜单树
       tags:
-      - '[Admin]菜单管理'
+      - Admin-菜单管理
   /v1/admin/publishers:
     get:
       consumes:
@@ -1853,7 +1853,7 @@ paths:
       - BearerAuth: []
       summary: 获取游戏厂商列表
       tags:
-      - '[Admin]厂商管理'
+      - Admin-厂商管理
     post:
       consumes:
       - application/json
@@ -1888,7 +1888,7 @@ paths:
       - BearerAuth: []
       summary: 创建游戏厂商
       tags:
-      - '[Admin]厂商管理'
+      - Admin-厂商管理
   /v1/admin/publishers/{id}:
     delete:
       consumes:
@@ -1923,7 +1923,7 @@ paths:
       - BearerAuth: []
       summary: 删除游戏厂商
       tags:
-      - '[Admin]厂商管理'
+      - Admin-厂商管理
     get:
       consumes:
       - application/json
@@ -1962,7 +1962,7 @@ paths:
       - BearerAuth: []
       summary: 获取游戏厂商详情
       tags:
-      - '[Admin]厂商管理'
+      - Admin-厂商管理
     put:
       consumes:
       - application/json
@@ -2002,7 +2002,7 @@ paths:
       - BearerAuth: []
       summary: 更新游戏厂商
       tags:
-      - '[Admin]厂商管理'
+      - Admin-厂商管理
   /v1/admin/register:
     post:
       consumes:
@@ -2034,7 +2034,7 @@ paths:
       - BearerAuth: []
       summary: 创建管理员账号
       tags:
-      - '[Admin]管理员认证'
+      - Admin-管理员认证
   /v1/admin/roles:
     get:
       consumes:
@@ -2087,7 +2087,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色列表
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
     post:
       consumes:
       - application/json
@@ -2118,7 +2118,7 @@ paths:
       - BearerAuth: []
       summary: 创建角色
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/admin/roles/{id}:
     delete:
       consumes:
@@ -2153,7 +2153,7 @@ paths:
       - BearerAuth: []
       summary: 删除角色
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
     get:
       consumes:
       - application/json
@@ -2192,7 +2192,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色详情
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
     put:
       consumes:
       - application/json
@@ -2232,7 +2232,7 @@ paths:
       - BearerAuth: []
       summary: 更新角色
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/admin/roles/admin/{admin_id}:
     get:
       consumes:
@@ -2272,7 +2272,7 @@ paths:
       - BearerAuth: []
       summary: 获取管理员角色信息
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/admin/roles/assign:
     post:
       consumes:
@@ -2308,7 +2308,7 @@ paths:
       - BearerAuth: []
       summary: 分配管理员角色
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/admin/roles/auth:
     post:
       consumes:
@@ -2344,7 +2344,7 @@ paths:
       - BearerAuth: []
       summary: 角色授权
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/admin/roles/select:
     get:
       consumes:
@@ -2372,7 +2372,7 @@ paths:
       - BearerAuth: []
       summary: 获取角色选择列表
       tags:
-      - '[Admin]角色管理'
+      - Admin-角色管理
   /v1/api/auth/login:
     post:
       consumes:
@@ -2409,7 +2409,7 @@ paths:
             $ref: '#/definitions/common.Response'
       summary: 用户登录
       tags:
-      - '[API]用户认证'
+      - System-用户认证
   /v1/api/auth/register:
     post:
       consumes:
@@ -2446,7 +2446,7 @@ paths:
             $ref: '#/definitions/common.Response'
       summary: 用户注册
       tags:
-      - '[API]用户认证'
+      - System-用户认证
   /v1/api/user/info:
     get:
       consumes:
@@ -2476,7 +2476,7 @@ paths:
       - BearerAuth: []
       summary: 获取用户信息
       tags:
-      - '[API]用户认证'
+      - System-用户认证
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" followed by a space and JWT token.
@@ -2484,3 +2484,10 @@ securityDefinitions:
     name: Authorization
     type: apiKey
 swagger: "2.0"
+tags:
+- description: 后台管理相关接口，包含管理员认证、角色管理、菜单管理、字典管理、游戏管理等功能
+  name: Admin
+- description: 系统功能相关接口，包含前台用户认证、用户管理等功能
+  name: System
+- description: 前台网站相关接口，包含首页展示、内容管理等功能
+  name: Web

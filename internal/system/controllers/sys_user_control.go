@@ -13,7 +13,7 @@ import (
 // SysUserRegister 用户注册
 // @Summary 用户注册
 // @Description 前台用户注册新账号
-// @Tags [API]用户认证
+// @Tags System-用户认证
 // @Accept json
 // @Produce json
 // @Param request body dto.RegisterUserReq true "注册请求参数"
@@ -38,7 +38,7 @@ func SysUserRegister(c *gin.Context) {
 // SysUserLogin 用户登录
 // @Summary 用户登录
 // @Description 前台用户使用账号密码登录系统
-// @Tags [API]用户认证
+// @Tags System-用户认证
 // @Accept json
 // @Produce json
 // @Param request body dto.LoginReq true "登录请求参数"
@@ -65,7 +65,7 @@ func SysUserLogin(c *gin.Context) {
 // SysUserInfo 获取用户信息
 // @Summary 获取用户信息
 // @Description 获取当前登录用户的详细信息
-// @Tags [API]用户认证
+// @Tags System-用户认证
 // @Accept json
 // @Produce json
 // @Security BearerAuth

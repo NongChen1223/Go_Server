@@ -11,7 +11,7 @@ import (
 // AdminLogin 管理员登录
 // @Summary 管理员登录
 // @Description 管理员使用账号密码登录系统，返回JWT token
-// @Tags [Admin]管理员认证
+// @Tags Admin-管理员认证
 // @Accept json
 // @Produce json
 // @Param request body dto.AdminLoginReq true "登录请求参数"
@@ -43,7 +43,7 @@ func AdminLogin(c *gin.Context) {
 // AdminRegister 管理员注册（创建管理员账号）
 // @Summary 创建管理员账号
 // @Description 创建新的管理员账号（需要管理员权限）
-// @Tags [Admin]管理员认证
+// @Tags Admin-管理员认证
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -78,7 +78,7 @@ func AdminRegister(c *gin.Context) {
 // AdminLogout 管理员登出
 // @Summary 管理员登出
 // @Description 管理员登出系统，清除token
-// @Tags [Admin]管理员认证
+// @Tags Admin-管理员认证
 // @Accept json
 // @Produce json
 // @Security BearerAuth

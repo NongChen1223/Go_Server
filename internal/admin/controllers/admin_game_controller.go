@@ -12,7 +12,7 @@ import (
 // CreateGame 创建游戏
 // @Summary 创建游戏
 // @Description 创建新的游戏记录，包括基本信息和关联数据
-// @Tags [Admin]游戏管理
+// @Tags Admin-游戏管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -48,7 +48,7 @@ func CreateGame(c *gin.Context) {
 // UpdateGame 更新游戏
 // @Summary 更新游戏
 // @Description 更新游戏信息，包括基本信息和关联数据
-// @Tags [Admin]游戏管理
+// @Tags Admin-游戏管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -96,7 +96,7 @@ func UpdateGame(c *gin.Context) {
 // GetGameDetail 获取游戏详情
 // @Summary 获取游戏详情
 // @Description 根据游戏ID获取游戏的详细信息，包括所有关联数据
-// @Tags [Admin]游戏管理
+// @Tags Admin-游戏管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -127,7 +127,7 @@ func GetGameDetail(c *gin.Context) {
 // GetGameList 获取游戏列表
 // @Summary 获取游戏列表
 // @Description 分页获取游戏列表，支持多种条件筛选
-// @Tags [Admin]游戏管理
+// @Tags Admin-游戏管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -174,7 +174,7 @@ func GetGameList(c *gin.Context) {
 // DeleteGame 删除游戏
 // @Summary 删除游戏
 // @Description 根据游戏ID删除游戏及其所有关联数据
-// @Tags [Admin]游戏管理
+// @Tags Admin-游戏管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth

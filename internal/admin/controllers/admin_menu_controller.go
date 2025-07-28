@@ -12,7 +12,7 @@ import (
 // GetMenuList 获取菜单列表
 // @Summary 获取菜单列表
 // @Description 获取系统菜单列表，支持树形结构展示和条件查询
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -45,7 +45,7 @@ func GetMenuList(c *gin.Context) {
 // GetMenuDetail 获取菜单详情
 // @Summary 获取菜单详情
 // @Description 根据菜单ID获取菜单的详细信息
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -76,7 +76,7 @@ func GetMenuDetail(c *gin.Context) {
 // CreateMenu 创建菜单
 // @Summary 创建菜单
 // @Description 创建新的系统菜单
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -112,7 +112,7 @@ func CreateMenu(c *gin.Context) {
 // UpdateMenu 更新菜单
 // @Summary 更新菜单
 // @Description 更新系统菜单信息
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -160,7 +160,7 @@ func UpdateMenu(c *gin.Context) {
 // DeleteMenu 删除菜单
 // @Summary 删除菜单
 // @Description 删除系统菜单
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -191,7 +191,7 @@ func DeleteMenu(c *gin.Context) {
 // GetMenuTree 获取菜单树
 // @Summary 获取菜单树
 // @Description 获取菜单树形结构，用于角色分配权限时的选择
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -212,7 +212,7 @@ func GetMenuTree(c *gin.Context) {
 // GetMenuRouters 获取菜单路由
 // @Summary 获取菜单路由
 // @Description 获取当前管理员的菜单路由信息，用于前端动态路由生成
-// @Tags [Admin]菜单管理
+// @Tags Admin-菜单管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth

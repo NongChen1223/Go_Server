@@ -14,7 +14,7 @@ import (
 // CreateDictType 创建字典类型
 // @Summary 创建字典类型
 // @Description 创建新的字典类型，用于系统配置管理
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -54,7 +54,7 @@ func CreateDictType(c *gin.Context) {
 // UpdateDictType 更新字典类型
 // @Summary 更新字典类型
 // @Description 根据ID更新字典类型信息
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -102,7 +102,7 @@ func UpdateDictType(c *gin.Context) {
 // DeleteDictType 删除字典类型
 // @Summary 删除字典类型
 // @Description 根据ID删除字典类型
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -134,7 +134,7 @@ func DeleteDictType(c *gin.Context) {
 // GetDictTypeDetail 获取字典类型详情
 // @Summary 获取字典类型详情
 // @Description 根据ID获取字典类型的详细信息
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -167,7 +167,7 @@ func GetDictTypeDetail(c *gin.Context) {
 // GetDictTypeList 获取字典类型列表
 // @Summary 获取字典类型列表
 // @Description 分页获取字典类型列表，支持按名称和类型筛选
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -213,7 +213,7 @@ func GetDictTypeList(c *gin.Context) {
 // GetDictDataByType 根据字典类型获取字典数据
 // @Summary 根据类型获取字典数据
 // @Description 根据字典类型标识获取该类型下的所有字典数据
-// @Tags [Admin]字典管理
+// @Tags Admin-字典管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth

@@ -39,7 +39,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "根据类型获取字典数据",
                 "parameters": [
@@ -101,7 +101,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "获取字典类型列表",
                 "parameters": [
@@ -188,7 +188,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "创建字典类型",
                 "parameters": [
@@ -245,7 +245,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "获取字典类型详情",
                 "parameters": [
@@ -310,7 +310,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "更新字典类型",
                 "parameters": [
@@ -372,7 +372,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]字典管理"
+                    "Admin-字典管理"
                 ],
                 "summary": "删除字典类型",
                 "parameters": [
@@ -427,7 +427,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]游戏管理"
+                    "Admin-游戏管理"
                 ],
                 "summary": "获取游戏列表",
                 "parameters": [
@@ -568,7 +568,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]游戏管理"
+                    "Admin-游戏管理"
                 ],
                 "summary": "创建游戏",
                 "parameters": [
@@ -619,7 +619,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]游戏管理"
+                    "Admin-游戏管理"
                 ],
                 "summary": "获取游戏详情",
                 "parameters": [
@@ -678,7 +678,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]游戏管理"
+                    "Admin-游戏管理"
                 ],
                 "summary": "更新游戏",
                 "parameters": [
@@ -734,7 +734,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]游戏管理"
+                    "Admin-游戏管理"
                 ],
                 "summary": "删除游戏",
                 "parameters": [
@@ -778,7 +778,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]管理员认证"
+                    "Admin-管理员认证"
                 ],
                 "summary": "管理员登录",
                 "parameters": [
@@ -842,7 +842,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]管理员认证"
+                    "Admin-管理员认证"
                 ],
                 "summary": "管理员登出",
                 "responses": {
@@ -876,7 +876,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "获取菜单列表",
                 "parameters": [
@@ -961,7 +961,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "创建菜单",
                 "parameters": [
@@ -1012,7 +1012,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "获取菜单路由",
                 "responses": {
@@ -1061,7 +1061,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "获取菜单树",
                 "responses": {
@@ -1110,7 +1110,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "获取菜单详情",
                 "parameters": [
@@ -1175,7 +1175,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "更新菜单",
                 "parameters": [
@@ -1237,7 +1237,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]菜单管理"
+                    "Admin-菜单管理"
                 ],
                 "summary": "删除菜单",
                 "parameters": [
@@ -1292,7 +1292,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]厂商管理"
+                    "Admin-厂商管理"
                 ],
                 "summary": "获取游戏厂商列表",
                 "parameters": [
@@ -1373,7 +1373,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]厂商管理"
+                    "Admin-厂商管理"
                 ],
                 "summary": "创建游戏厂商",
                 "parameters": [
@@ -1430,7 +1430,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]厂商管理"
+                    "Admin-厂商管理"
                 ],
                 "summary": "获取游戏厂商详情",
                 "parameters": [
@@ -1495,7 +1495,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]厂商管理"
+                    "Admin-厂商管理"
                 ],
                 "summary": "更新游戏厂商",
                 "parameters": [
@@ -1557,7 +1557,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]厂商管理"
+                    "Admin-厂商管理"
                 ],
                 "summary": "删除游戏厂商",
                 "parameters": [
@@ -1612,7 +1612,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]管理员认证"
+                    "Admin-管理员认证"
                 ],
                 "summary": "创建管理员账号",
                 "parameters": [
@@ -1663,7 +1663,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "获取角色列表",
                 "parameters": [
@@ -1747,7 +1747,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "创建角色",
                 "parameters": [
@@ -1798,7 +1798,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "获取管理员角色信息",
                 "parameters": [
@@ -1865,7 +1865,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "分配管理员角色",
                 "parameters": [
@@ -1922,7 +1922,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "角色授权",
                 "parameters": [
@@ -1979,7 +1979,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "获取角色选择列表",
                 "responses": {
@@ -2028,7 +2028,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "获取角色详情",
                 "parameters": [
@@ -2093,7 +2093,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "更新角色",
                 "parameters": [
@@ -2155,7 +2155,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[Admin]角色管理"
+                    "Admin-角色管理"
                 ],
                 "summary": "删除角色",
                 "parameters": [
@@ -2205,7 +2205,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[API]用户认证"
+                    "System-用户认证"
                 ],
                 "summary": "用户登录",
                 "parameters": [
@@ -2266,7 +2266,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[API]用户认证"
+                    "System-用户认证"
                 ],
                 "summary": "用户注册",
                 "parameters": [
@@ -2332,7 +2332,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "[API]用户认证"
+                    "System-用户认证"
                 ],
                 "summary": "获取用户信息",
                 "responses": {
@@ -3751,7 +3751,21 @@ const docTemplate = `{
             "name": "Authorization",
             "in": "header"
         }
-    }
+    },
+    "tags": [
+        {
+            "description": "后台管理相关接口，包含管理员认证、角色管理、菜单管理、字典管理、游戏管理等功能",
+            "name": "Admin"
+        },
+        {
+            "description": "系统功能相关接口，包含前台用户认证、用户管理等功能",
+            "name": "System"
+        },
+        {
+            "description": "前台网站相关接口，包含首页展示、内容管理等功能",
+            "name": "Web"
+        }
+    ]
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it

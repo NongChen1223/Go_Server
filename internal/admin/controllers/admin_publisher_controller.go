@@ -13,7 +13,7 @@ import (
 // CreatePublisher 创建游戏厂商
 // @Summary 创建游戏厂商
 // @Description 创建新的游戏厂商信息
-// @Tags [Admin]厂商管理
+// @Tags Admin-厂商管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -53,7 +53,7 @@ func CreatePublisher(c *gin.Context) {
 // UpdatePublisher 更新游戏厂商
 // @Summary 更新游戏厂商
 // @Description 根据ID更新游戏厂商信息
-// @Tags [Admin]厂商管理
+// @Tags Admin-厂商管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -101,7 +101,7 @@ func UpdatePublisher(c *gin.Context) {
 // DeletePublisher 删除游戏厂商
 // @Summary 删除游戏厂商
 // @Description 根据ID删除游戏厂商
-// @Tags [Admin]厂商管理
+// @Tags Admin-厂商管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -133,7 +133,7 @@ func DeletePublisher(c *gin.Context) {
 // GetPublisherDetail 获取游戏厂商详情
 // @Summary 获取游戏厂商详情
 // @Description 根据ID获取游戏厂商的详细信息
-// @Tags [Admin]厂商管理
+// @Tags Admin-厂商管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -165,7 +165,7 @@ func GetPublisherDetail(c *gin.Context) {
 // GetPublisherList 获取游戏厂商列表
 // @Summary 获取游戏厂商列表
 // @Description 分页获取游戏厂商列表，支持按名称筛选
-// @Tags [Admin]厂商管理
+// @Tags Admin-厂商管理
 // @Accept json
 // @Produce json
 // @Security BearerAuth
