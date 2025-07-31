@@ -90,3 +90,32 @@ func AdminLogout(c *gin.Context) {
 	// 目前简单返回成功，实际项目中可以将token加入黑名单
 	common.Success(c, gin.H{"message": "登出成功"})
 }
+
+// GetAdminInfo 获取管理员信息
+// @Summary 获取管理员信息
+// @Description 获取当前登录管理员的详细信息，包括基本信息、角色、菜单路由和权限列表
+// @Tags Admin-管理员认证
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} common.Response{data=dto.AdminInfoRes} "获取成功"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "管理员不存在"
+// @Router /v1/admin/info [get]
+func GetAdminInfo(c *gin.Context) {
+	// 获取当前管理员ID
+	adminID, exists := c.Get("admin_id")
+	if !exists {
+		common.Error(c, constants.ErrorCode, "获取管理员信息失败")
+		return
+	}
+
+	// 调用服务获取管理员信息
+	adminInfo, err := services.GetAdminInfo(adminID.(uint64))
+	if err != nil {
+		common.Error(c, constants.ErrorCode, err.Error())
+		return
+	}
+
+	common.Success(c, adminInfo)
+}

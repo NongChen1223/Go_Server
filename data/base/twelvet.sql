@@ -755,3 +755,44 @@ VALUES
 INSERT INTO `sys_admin_user_role` (`admin_id`, `role_id`)
 VALUES
 (1, 1); -- 为admin账号分配超级管理员角色
+
+-- ----------------------------
+-- 初始化数据范围字典类型
+-- 说明：定义角色数据权限范围的字典类型，用于前端下拉选择
+-- 用途：在角色管理页面，管理员创建或编辑角色时选择数据权限范围
+-- 业务价值：实现精细化的数据权限控制，支持多层级的数据访问控制
+-- ----------------------------
+INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `remark`)
+VALUES
+(100, '数据范围', 'sys_data_scope', 1, 'admin', '角色数据权限范围字典');
+
+-- ----------------------------
+-- 初始化数据范围字典数据
+-- 说明：定义具体的数据权限范围选项，对应角色表中的data_scope字段
+-- 数据权限层级：从全部权限到仅本人权限，实现递减的权限控制
+-- 扩展性：支持未来添加更多数据权限类型，如按项目、按客户等维度
+-- ----------------------------
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `is_default`, `status`, `create_by`, `remark`)
+VALUES
+(100, 1, '全部数据权限', '1', 'sys_data_scope', 1, 1, 'admin', '可以访问系统中的所有数据，通常分配给超级管理员'),
+(101, 2, '自定数据权限', '2', 'sys_data_scope', 0, 1, 'admin', '可以访问自定义指定的数据范围，需要额外配置具体的数据权限'),
+(102, 3, '本部门数据权限', '3', 'sys_data_scope', 0, 1, 'admin', '只能访问本部门的数据，适用于部门管理员角色'),
+(103, 4, '本部门及以下数据权限', '4', 'sys_data_scope', 0, 1, 'admin', '可以访问本部门及其所有子部门的数据，适用于上级管理员'),
+(104, 5, '仅本人数据权限', '5', 'sys_data_scope', 0, 1, 'admin', '只能访问自己创建或拥有的数据，适用于普通用户角色');
+
+-- ----------------------------
+-- 初始化菜单树关联显示字典类型
+-- 说明：定义菜单树选择时父子节点是否关联显示的字典
+-- 用途：在角色权限分配时，控制菜单树的选择行为
+-- ----------------------------
+INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `remark`)
+VALUES
+(101, '菜单树关联显示', 'sys_tree_check_strictly', 1, 'admin', '菜单树选择项是否关联显示字典');
+
+-- ----------------------------
+-- 初始化菜单树关联显示字典数据
+-- ----------------------------
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `is_default`, `status`, `create_by`, `remark`)
+VALUES
+(105, 1, '父子不关联', '0', 'sys_tree_check_strictly', 1, 1, 'admin', '父子节点选择时不互相关联，可以独立选择'),
+(106, 2, '父子关联', '1', 'sys_tree_check_strictly', 0, 1, 'admin', '父子节点选择时互相关联，选择父节点会自动选择所有子节点');

@@ -313,3 +313,71 @@ func GetAdminRole(c *gin.Context) {
 
 	common.Success(c, adminRole)
 }
+
+// GetRoleMenuTree 获取角色菜单权限树
+// @Summary 获取角色菜单权限树
+// @Description 获取指定角色的菜单权限树，显示已分配的菜单权限状态
+// @Tags Admin-角色管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param role_id path int true "角色ID"
+// @Success 200 {object} common.Response{data=[]dto.RoleMenuTreeRes} "获取成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "角色不存在"
+// @Router /v1/admin/roles/menus/{role_id} [get]
+func GetRoleMenuTree(c *gin.Context) {
+	idStr := c.Param("role_id")
+	roleID, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		common.Error(c, constants.ErrorCode, "角色ID格式错误")
+		return
+	}
+
+	// 调用服务获取角色菜单权限树
+	menuTree, err := services.GetRoleMenuTree(roleID)
+	if err != nil {
+		common.Error(c, constants.ErrorCode, err.Error())
+		return
+	}
+
+	common.Success(c, menuTree)
+}
+
+// AssignRoleMenus 分配角色菜单权限
+// @Summary 分配角色菜单权限
+// @Description 为指定角色分配菜单权限
+// @Tags Admin-角色管理
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.RoleMenuAuthReq true "角色菜单权限分配请求参数"
+// @Success 200 {object} common.Response "分配成功"
+// @Failure 400 {object} common.Response "参数错误"
+// @Failure 401 {object} common.Response "未授权"
+// @Failure 404 {object} common.Response "角色不存在"
+// @Router /v1/admin/roles/menus/assign [post]
+func AssignRoleMenus(c *gin.Context) {
+	var req dto.RoleMenuAuthReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		common.Error(c, constants.ErrorCode, "参数错误: "+err.Error())
+		return
+	}
+
+	// 获取当前管理员信息
+	adminName, exists := c.Get("admin_name")
+	if !exists {
+		common.Error(c, constants.ErrorCode, "获取管理员信息失败")
+		return
+	}
+
+	// 调用服务分配角色菜单权限
+	err := services.AssignRoleMenus(req, adminName.(string))
+	if err != nil {
+		common.Error(c, constants.ErrorCode, err.Error())
+		return
+	}
+
+	common.Success(c, "角色菜单权限分配成功")
+}

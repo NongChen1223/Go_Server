@@ -26,13 +26,13 @@ type BaseEntity struct {
 // StatusEntity 状态实体字段
 // 包含状态字段，适用于大多数需要启用/禁用功能的实体
 type StatusEntity struct {
-	Status int `json:"status"` // 状态（0停用 1正常）
+	Status int `json:"status" example:"1"` // 状态（0停用 1正常）
 }
 
 // RemarkEntity 备注实体字段
 // 包含备注字段，适用于需要添加备注说明的实体
 type RemarkEntity struct {
-	Remark *string `json:"remark"` // 备注
+	Remark *string `json:"remark" example:"这是一个备注"` // 备注
 }
 
 // SortEntity 排序实体字段

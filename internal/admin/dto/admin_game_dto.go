@@ -9,19 +9,19 @@ import (
 // GameReq 游戏请求结构体
 // 用于创建和更新游戏时接收前端传来的数据
 type GameReq struct {
-	GameID       uint64     `json:"game_id,omitempty"`                   // 游戏ID，更新时需要，创建时忽略
-	NameZh       string     `json:"name_zh" binding:"required"`          // 游戏中文名称，必填
-	NameEn       *string    `json:"name_en"`                             // 游戏英文名称，可选
-	ReleaseDate  *time.Time `json:"release_date"`                        // 游戏发布日期，可选
-	Description  *string    `json:"description"`                         // 游戏介绍，可选
-	Rating       *float64   `json:"rating"`                              // 游戏评分，可选
-	Size         *string    `json:"size"`                                // 游戏大小，可选
-	Price        *float64   `json:"price"`                               // 游戏价格，可选
-	PublisherID  *uint64    `json:"publisher_id"`                        // 游戏厂商ID，可选
-	StudioID     *uint64    `json:"studio_id"`                           // 游戏工作室ID，可选
-	ShutdownDate *time.Time `json:"shutdown_date"`                       // 游戏停服日期，可选
-	DemoVideo    *string    `json:"demo_video"`                          // 游戏演示视频链接，可选
-	Status       int        `json:"status" binding:"required,oneof=0 1"` // 状态，必填，只能是0或1
+	GameID       uint64     `json:"game_id,omitempty" example:"1"`                      // 游戏ID，更新时需要，创建时忽略
+	NameZh       string     `json:"name_zh" binding:"required" example:"原神"`            // 游戏中文名称，必填
+	NameEn       *string    `json:"name_en" example:"Genshin Impact"`                   // 游戏英文名称，可选
+	ReleaseDate  *time.Time `json:"release_date" example:"2020-09-28T00:00:00Z"`        // 游戏发布日期，可选
+	Description  *string    `json:"description" example:"开放世界冒险游戏"`                     // 游戏介绍，可选
+	Rating       *float64   `json:"rating" example:"9.5"`                               // 游戏评分，可选
+	Size         *string    `json:"size" example:"15GB"`                                // 游戏大小，可选
+	Price        *float64   `json:"price" example:"0"`                                  // 游戏价格，可选
+	PublisherID  *uint64    `json:"publisher_id" example:"1"`                           // 游戏厂商ID，可选
+	StudioID     *uint64    `json:"studio_id" example:"1"`                              // 游戏工作室ID，可选
+	ShutdownDate *time.Time `json:"shutdown_date" example:"2030-12-31T00:00:00Z"`       // 游戏停服日期，可选
+	DemoVideo    *string    `json:"demo_video" example:"https://example.com/video.mp4"` // 游戏演示视频链接，可选
+	Status       int        `json:"status" binding:"required,oneof=0 1" example:"1"`    // 状态，必填，只能是0或1
 
 	// 关联数据
 	TypeCodes     []uint64 `json:"type_codes"`     // 游戏类型编码数组

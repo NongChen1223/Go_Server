@@ -20,6 +20,7 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 		authAdmin.Use(middleware.AdminAuthMiddleware()) // 管理员权限中间件
 		{
 			authAdmin.POST("/logout", controllers.AdminLogout) // 管理员登出
+			authAdmin.GET("/info", controllers.GetAdminInfo)   // 获取管理员信息
 
 			// 字典管理路由组
 			// 字典管理路由组
@@ -77,15 +78,17 @@ func SetupAdminRoutes(router *gin.RouterGroup) {
 			// 角色管理路由组
 			roleGroup := authAdmin.Group("/roles")
 			{
-				roleGroup.GET("", controllers.GetRoleList)                  // 获取角色列表
-				roleGroup.GET("/select", controllers.GetRoleSelect)         // 获取角色选择列表
-				roleGroup.GET("/:id", controllers.GetRoleDetail)            // 获取角色详情
-				roleGroup.GET("/admin/:admin_id", controllers.GetAdminRole) // 获取管理员角色信息
-				roleGroup.POST("", controllers.CreateRole)                  // 创建角色
-				roleGroup.POST("/auth", controllers.AuthRole)               // 角色授权
-				roleGroup.POST("/assign", controllers.AssignAdminRole)      // 分配管理员角色
-				roleGroup.PUT("/:id", controllers.UpdateRole)               // 更新角色
-				roleGroup.DELETE("/:id", controllers.DeleteRole)            // 删除角色
+				roleGroup.GET("", controllers.GetRoleList)                    // 获取角色列表
+				roleGroup.GET("/select", controllers.GetRoleSelect)           // 获取角色选择列表
+				roleGroup.GET("/admin/:admin_id", controllers.GetAdminRole)   // 获取管理员角色信息
+				roleGroup.GET("/menus/:role_id", controllers.GetRoleMenuTree) // 获取角色菜单权限树
+				roleGroup.GET("/:id", controllers.GetRoleDetail)              // 获取角色详情
+				roleGroup.POST("", controllers.CreateRole)                    // 创建角色
+				roleGroup.POST("/auth", controllers.AuthRole)                 // 角色授权（旧接口，保持兼容）
+				roleGroup.POST("/menus/assign", controllers.AssignRoleMenus)  // 分配角色菜单权限
+				roleGroup.POST("/assign", controllers.AssignAdminRole)        // 分配管理员角色
+				roleGroup.PUT("/:id", controllers.UpdateRole)                 // 更新角色
+				roleGroup.DELETE("/:id", controllers.DeleteRole)              // 删除角色
 			}
 		}
 	}

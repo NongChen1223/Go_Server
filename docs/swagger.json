@@ -762,6 +762,58 @@
                 }
             }
         },
+        "/v1/admin/info": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "获取当前登录管理员的详细信息，包括基本信息、角色、菜单路由和权限列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-管理员认证"
+                ],
+                "summary": "获取管理员信息",
+                "responses": {
+                    "200": {
+                        "description": "获取成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.AdminInfoRes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "管理员不存在",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/admin/login": {
             "post": {
                 "description": "管理员使用账号密码登录系统，返回JWT token",
@@ -1958,6 +2010,133 @@
                 }
             }
         },
+        "/v1/admin/roles/menus/assign": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "为指定角色分配菜单权限",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-角色管理"
+                ],
+                "summary": "分配角色菜单权限",
+                "parameters": [
+                    {
+                        "description": "角色菜单权限分配请求参数",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RoleMenuAuthReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分配成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "角色不存在",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/admin/roles/menus/{role_id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "获取指定角色的菜单权限树，显示已分配的菜单权限状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-角色管理"
+                ],
+                "summary": "获取角色菜单权限树",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色ID",
+                        "name": "role_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.RoleMenuTreeRes"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "角色不存在",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/admin/roles/select": {
             "get": {
                 "security": [
@@ -2426,6 +2605,65 @@
                 }
             }
         },
+        "dto.AdminInfoDetail": {
+            "type": "object",
+            "properties": {
+                "admin_id": {
+                    "description": "管理员ID",
+                    "type": "integer"
+                },
+                "admin_name": {
+                    "description": "管理员账号",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "real_name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.AdminInfoRes": {
+            "type": "object",
+            "properties": {
+                "admin_info": {
+                    "description": "管理员基本信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.AdminInfoDetail"
+                        }
+                    ]
+                },
+                "menus": {
+                    "description": "菜单路由",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.AdminMenuRouter"
+                    }
+                },
+                "perms": {
+                    "description": "权限列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles": {
+                    "description": "角色信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.AdminRoleInfo"
+                    }
+                }
+            }
+        },
         "dto.AdminLoginReq": {
             "type": "object",
             "required": [
@@ -2442,6 +2680,50 @@
                     "description": "密码",
                     "type": "string",
                     "example": "123456"
+                }
+            }
+        },
+        "dto.AdminMenuRouter": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "description": "子路由",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.AdminMenuRouter"
+                    }
+                },
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
+                "hidden": {
+                    "description": "是否隐藏路由",
+                    "type": "boolean"
+                },
+                "meta": {
+                    "description": "路由元信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.AdminRouterMeta"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "路由名称",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "路由路径",
+                    "type": "string"
+                },
+                "query": {
+                    "description": "路由参数",
+                    "type": "string"
+                },
+                "redirect": {
+                    "description": "重定向地址",
+                    "type": "string"
                 }
             }
         },
@@ -2505,8 +2787,43 @@
                 }
             }
         },
+        "dto.AdminRoleInfo": {
+            "type": "object",
+            "properties": {
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer"
+                },
+                "role_key": {
+                    "description": "角色权限字符串",
+                    "type": "string"
+                },
+                "role_name": {
+                    "description": "角色名称",
+                    "type": "string"
+                }
+            }
+        },
         "dto.AdminRoleReq": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "admin_id"
+            ],
+            "properties": {
+                "admin_id": {
+                    "description": "管理员ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "role_ids": {
+                    "description": "角色ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
         },
         "dto.AdminRoleRes": {
             "type": "object",
@@ -2543,6 +2860,27 @@
                 }
             }
         },
+        "dto.AdminRouterMeta": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "link": {
+                    "description": "外链地址",
+                    "type": "string"
+                },
+                "noCache": {
+                    "description": "是否不缓存",
+                    "type": "boolean"
+                },
+                "title": {
+                    "description": "路由标题",
+                    "type": "string"
+                }
+            }
+        },
         "dto.DictTypeReq": {
             "type": "object",
             "required": [
@@ -2552,23 +2890,28 @@
             "properties": {
                 "dict_id": {
                     "description": "字典类型ID，更新时需要，创建时忽略",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "dict_name": {
                     "description": "字典名称，必填",
-                    "type": "string"
+                    "type": "string",
+                    "example": "游戏类型"
                 },
                 "dict_type": {
                     "description": "字典类型标识，必填，如\"game_type\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "game_type"
                 },
                 "remark": {
                     "description": "备注",
-                    "type": "string"
+                    "type": "string",
+                    "example": "这是一个备注"
                 },
                 "status": {
                     "description": "状态（0停用 1正常）",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -2597,7 +2940,8 @@
                 },
                 "remark": {
                     "description": "备注",
-                    "type": "string"
+                    "type": "string",
+                    "example": "这是一个备注"
                 },
                 "status": {
                     "description": "状态（0停用 1正常）",
@@ -2716,15 +3060,18 @@
                 },
                 "demo_video": {
                     "description": "游戏演示视频链接，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://example.com/video.mp4"
                 },
                 "description": {
                     "description": "游戏介绍，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "开放世界冒险游戏"
                 },
                 "game_id": {
                     "description": "游戏ID，更新时需要，创建时忽略",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "language_codes": {
                     "description": "游戏语言编码数组",
@@ -2735,11 +3082,13 @@
                 },
                 "name_en": {
                     "description": "游戏英文名称，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "Genshin Impact"
                 },
                 "name_zh": {
                     "description": "游戏中文名称，必填",
-                    "type": "string"
+                    "type": "string",
+                    "example": "原神"
                 },
                 "platform_codes": {
                     "description": "游戏平台编码数组",
@@ -2750,19 +3099,23 @@
                 },
                 "price": {
                     "description": "游戏价格，可选",
-                    "type": "number"
+                    "type": "number",
+                    "example": 0
                 },
                 "publisher_id": {
                     "description": "游戏厂商ID，可选",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "rating": {
                     "description": "游戏评分，可选",
-                    "type": "number"
+                    "type": "number",
+                    "example": 9.5
                 },
                 "release_date": {
                     "description": "游戏发布日期，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "2020-09-28T00:00:00Z"
                 },
                 "screenshots": {
                     "description": "游戏截图数组",
@@ -2773,11 +3126,13 @@
                 },
                 "shutdown_date": {
                     "description": "游戏停服日期，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "2030-12-31T00:00:00Z"
                 },
                 "size": {
                     "description": "游戏大小，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "15GB"
                 },
                 "status": {
                     "description": "状态，必填，只能是0或1",
@@ -2785,11 +3140,13 @@
                     "enum": [
                         0,
                         1
-                    ]
+                    ],
+                    "example": 1
                 },
                 "studio_id": {
                     "description": "游戏工作室ID，可选",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "type_codes": {
                     "description": "关联数据",
@@ -2991,11 +3348,13 @@
             "properties": {
                 "password": {
                     "description": "密码，必填",
-                    "type": "string"
+                    "type": "string",
+                    "example": "123456"
                 },
                 "user_name": {
                     "description": "用户名，必填",
-                    "type": "string"
+                    "type": "string",
+                    "example": "testuser"
                 }
             }
         },
@@ -3505,23 +3864,28 @@
             "properties": {
                 "description": {
                     "description": "厂商介绍，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "知名游戏开发商"
                 },
                 "founded_date": {
                     "description": "成立日期，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "2012-02-13T00:00:00Z"
                 },
                 "logo_url": {
                     "description": "厂商LOGO，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://example.com/logo.png"
                 },
                 "publisher_id": {
                     "description": "厂商ID，更新时需要，创建时忽略",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "publisher_name": {
                     "description": "厂商名称，必填",
-                    "type": "string"
+                    "type": "string",
+                    "example": "米哈游"
                 },
                 "status": {
                     "description": "状态，必填，只能是0或1",
@@ -3529,11 +3893,13 @@
                     "enum": [
                         0,
                         1
-                    ]
+                    ],
+                    "example": 1
                 },
                 "website": {
                     "description": "官方网站，可选",
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://www.mihoyo.com"
                 }
             }
         },
@@ -3595,21 +3961,98 @@
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "description": "邮箱，必填",
+                    "type": "string",
+                    "example": "user@example.com"
                 },
                 "password": {
-                    "type": "string"
+                    "description": "密码，必填",
+                    "type": "string",
+                    "example": "123456"
                 },
                 "user_name": {
-                    "type": "string"
+                    "description": "用户名，必填",
+                    "type": "string",
+                    "example": "newuser"
                 }
             }
         },
         "dto.RoleAuthReq": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "role_id"
+            ],
+            "properties": {
+                "menu_ids": {
+                    "description": "菜单ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                }
+            }
         },
         "dto.RoleCreateReq": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "role_key",
+                "role_name"
+            ],
+            "properties": {
+                "menu_ids": {
+                    "description": "菜单ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "内容管理员角色"
+                },
+                "role_key": {
+                    "description": "角色权限字符串",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "content"
+                },
+                "role_name": {
+                    "description": "角色名称",
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 1,
+                    "example": "内容管理员"
+                },
+                "role_sort": {
+                    "description": "显示顺序",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1
+                },
+                "status": {
+                    "description": "角色状态（0停用 1正常）",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
         },
         "dto.RoleDetailRes": {
             "type": "object",
@@ -3679,6 +4122,64 @@
                 }
             }
         },
+        "dto.RoleMenuAuthReq": {
+            "type": "object",
+            "required": [
+                "role_id"
+            ],
+            "properties": {
+                "menu_ids": {
+                    "description": "菜单ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                }
+            }
+        },
+        "dto.RoleMenuTreeRes": {
+            "type": "object",
+            "properties": {
+                "checked": {
+                    "description": "是否选中",
+                    "type": "boolean"
+                },
+                "children": {
+                    "description": "子菜单列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.RoleMenuTreeRes"
+                    }
+                },
+                "menu_id": {
+                    "description": "菜单ID",
+                    "type": "integer"
+                },
+                "menu_name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "menu_type": {
+                    "description": "菜单类型",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父菜单ID",
+                    "type": "integer"
+                }
+            }
+        },
         "dto.RoleSelectRes": {
             "type": "object",
             "properties": {
@@ -3697,7 +4198,62 @@
             }
         },
         "dto.RoleUpdateReq": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "role_id",
+                "role_key",
+                "role_name"
+            ],
+            "properties": {
+                "menu_ids": {
+                    "description": "菜单ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string",
+                    "maxLength": 500,
+                    "example": "内容管理员角色"
+                },
+                "role_id": {
+                    "description": "角色ID",
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "role_key": {
+                    "description": "角色权限字符串",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "content"
+                },
+                "role_name": {
+                    "description": "角色名称",
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 1,
+                    "example": "内容管理员"
+                },
+                "role_sort": {
+                    "description": "显示顺序",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1
+                },
+                "status": {
+                    "description": "角色状态（0停用 1正常）",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
         },
         "dto.UserInfoRes": {
             "type": "object",

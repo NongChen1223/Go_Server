@@ -7,8 +7,8 @@ import (
 
 // 登录用户接口
 type LoginReq struct {
-	UserName string `json:"user_name" binding:"required"` // 用户名，必填
-	Password string `json:"password" binding:"required"`  // 密码，必填
+	UserName string `json:"user_name" binding:"required" example:"testuser"` // 用户名，必填
+	Password string `json:"password" binding:"required" example:"123456"`    // 密码，必填
 }
 
 // 登录响应接口
@@ -27,9 +27,9 @@ func (loginReq LoginReq) GetMessages() utils.ValidatorMessages {
 
 // 注册用户接口
 type RegisterUserReq struct {
-	UserName string `json:"user_name" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
+	UserName string `json:"user_name" binding:"required" example:"newuser"`            // 用户名，必填
+	Password string `json:"password" binding:"required" example:"123456"`              // 密码，必填
+	Email    string `json:"email" binding:"required,email" example:"user@example.com"` // 邮箱，必填
 }
 
 // 注册用户接口 自定义错误信息

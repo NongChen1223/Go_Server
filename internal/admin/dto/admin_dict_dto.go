@@ -8,9 +8,9 @@ import (
 // DictTypeReq 字典类型请求结构体
 // 用于创建和更新字典类型时接收前端传来的数据
 type DictTypeReq struct {
-	DictID              uint64 `json:"dict_id,omitempty"`            // 字典类型ID，更新时需要，创建时忽略
-	DictName            string `json:"dict_name" binding:"required"` // 字典名称，必填
-	DictType            string `json:"dict_type" binding:"required"` // 字典类型标识，必填，如"game_type"
+	DictID              uint64 `json:"dict_id,omitempty" example:"1"`                    // 字典类型ID，更新时需要，创建时忽略
+	DictName            string `json:"dict_name" binding:"required" example:"游戏类型"`      // 字典名称，必填
+	DictType            string `json:"dict_type" binding:"required" example:"game_type"` // 字典类型标识，必填，如"game_type"
 	common.StatusEntity        // 嵌入状态字段
 	common.RemarkEntity        // 嵌入备注字段
 }
@@ -38,12 +38,12 @@ type DictTypeQuery struct {
 // DictDataReq 字典数据请求结构体
 // 用于创建和更新字典数据时接收前端传来的数据
 type DictDataReq struct {
-	DictCode            uint64 `json:"dict_code,omitempty"`            // 字典编码，更新时需要
-	DictSort            int    `json:"dict_sort"`                      // 字典排序，数字越小越靠前
-	DictLabel           string `json:"dict_label" binding:"required"`  // 字典标签，显示给用户看的文本
-	DictValue           string `json:"dict_value" binding:"required"`  // 字典键值，程序中使用的值
-	DictType            string `json:"dict_type" binding:"required"`   // 字典类型，关联字典类型表
-	IsDefault           int    `json:"is_default" binding:"oneof=0 1"` // 是否默认选项
+	DictCode            uint64 `json:"dict_code,omitempty" example:"1"`                  // 字典编码，更新时需要
+	DictSort            int    `json:"dict_sort" example:"1"`                            // 字典排序，数字越小越靠前
+	DictLabel           string `json:"dict_label" binding:"required" example:"角色扮演"`     // 字典标签，显示给用户看的文本
+	DictValue           string `json:"dict_value" binding:"required" example:"RPG"`      // 字典键值，程序中使用的值
+	DictType            string `json:"dict_type" binding:"required" example:"game_type"` // 字典类型，关联字典类型表
+	IsDefault           int    `json:"is_default" binding:"oneof=0 1" example:"0"`       // 是否默认选项
 	common.StatusEntity        // 嵌入状态字段
 	common.RemarkEntity        // 嵌入备注字段
 }

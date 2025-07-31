@@ -50,29 +50,29 @@ type RoleDetailRes struct {
 
 // RoleCreateReq 创建角色请求
 type RoleCreateReq struct {
-	RoleName          string   `json:"role_name" binding:"required,min=1,max=30" example:"内容管理员"`   // 角色名称
-	RoleKey           string   `json:"role_key" binding:"required,min=1,max=100" example:"content"` // 角色权限字符串
-	RoleSort          int      `json:"role_sort" binding:"min=0" example:"1"`                       // 显示顺序
-	DataScope         int      `json:"data_scope" binding:"oneof=1 2 3 4 5" example:"1"`            // 数据范围
-	MenuCheckStrictly int      `json:"menu_check_strictly" binding:"oneof=0 1" example:"1"`         // 菜单树选择项是否关联显示
-	DeptCheckStrictly int      `json:"dept_check_strictly" binding:"oneof=0 1" example:"1"`         // 部门树选择项是否关联显示
-	Status            int      `json:"status" binding:"oneof=0 1" example:"1"`                      // 角色状态（0停用 1正常）
-	Remark            string   `json:"remark" binding:"max=500" example:"内容管理员角色"`                  // 备注
-	MenuIDs           []uint64 `json:"menu_ids" example:"[1,2,3]"`                                  // 菜单ID列表
+	RoleName          string   `json:"role_name" binding:"required,min=1,max=30" example:"内容管理员"`                        // 角色名称
+	RoleKey           string   `json:"role_key" binding:"required,min=1,max=100" example:"content"`                      // 角色权限字符串
+	RoleSort          int      `json:"role_sort" binding:"min=0" example:"1"`                                            // 显示顺序
+	DataScope         int      `json:"data_scope,omitempty" binding:"omitempty,oneof=1 2 3 4 5" swaggerignore:"true"`    // 数据范围（内部使用，前端无需传递）
+	MenuCheckStrictly int      `json:"menu_check_strictly,omitempty" binding:"omitempty,oneof=0 1" swaggerignore:"true"` // 菜单树关联（内部使用，前端无需传递）
+	DeptCheckStrictly int      `json:"dept_check_strictly,omitempty" binding:"omitempty,oneof=0 1" swaggerignore:"true"` // 部门树关联（内部使用，前端无需传递）
+	Status            int      `json:"status" binding:"oneof=0 1" example:"1"`                                           // 角色状态（0停用 1正常）
+	Remark            string   `json:"remark" binding:"max=500" example:"内容管理员角色"`                                       // 备注
+	MenuIDs           []uint64 `json:"menu_ids" example:"1,2,3"`                                                         // 菜单ID列表
 }
 
 // RoleUpdateReq 更新角色请求
 type RoleUpdateReq struct {
-	RoleID            uint64   `json:"role_id" binding:"required,min=1" example:"1"`                // 角色ID
-	RoleName          string   `json:"role_name" binding:"required,min=1,max=30" example:"内容管理员"`   // 角色名称
-	RoleKey           string   `json:"role_key" binding:"required,min=1,max=100" example:"content"` // 角色权限字符串
-	RoleSort          int      `json:"role_sort" binding:"min=0" example:"1"`                       // 显示顺序
-	DataScope         int      `json:"data_scope" binding:"oneof=1 2 3 4 5" example:"1"`            // 数据范围
-	MenuCheckStrictly int      `json:"menu_check_strictly" binding:"oneof=0 1" example:"1"`         // 菜单树选择项是否关联显示
-	DeptCheckStrictly int      `json:"dept_check_strictly" binding:"oneof=0 1" example:"1"`         // 部门树选择项是否关联显示
-	Status            int      `json:"status" binding:"oneof=0 1" example:"1"`                      // 角色状态（0停用 1正常）
-	Remark            string   `json:"remark" binding:"max=500" example:"内容管理员角色"`                  // 备注
-	MenuIDs           []uint64 `json:"menu_ids" example:"[1,2,3]"`                                  // 菜单ID列表
+	RoleID            uint64   `json:"role_id" binding:"required,min=1" example:"1"`                                     // 角色ID
+	RoleName          string   `json:"role_name" binding:"required,min=1,max=30" example:"内容管理员"`                        // 角色名称
+	RoleKey           string   `json:"role_key" binding:"required,min=1,max=100" example:"content"`                      // 角色权限字符串
+	RoleSort          int      `json:"role_sort" binding:"min=0" example:"1"`                                            // 显示顺序
+	DataScope         int      `json:"data_scope,omitempty" binding:"omitempty,oneof=1 2 3 4 5" swaggerignore:"true"`    // 数据范围（内部使用，前端无需传递）
+	MenuCheckStrictly int      `json:"menu_check_strictly,omitempty" binding:"omitempty,oneof=0 1" swaggerignore:"true"` // 菜单树关联（内部使用，前端无需传递）
+	DeptCheckStrictly int      `json:"dept_check_strictly,omitempty" binding:"omitempty,oneof=0 1" swaggerignore:"true"` // 部门树关联（内部使用，前端无需传递）
+	Status            int      `json:"status" binding:"oneof=0 1" example:"1"`                                           // 角色状态（0停用 1正常）
+	Remark            string   `json:"remark" binding:"max=500" example:"内容管理员角色"`                                       // 备注
+	MenuIDs           []uint64 `json:"menu_ids"`                                                                         // 菜单ID列表
 }
 
 // RoleSelectRes 角色选择响应（用于下拉选择）
@@ -85,13 +85,13 @@ type RoleSelectRes struct {
 // RoleAuthReq 角色授权请求
 type RoleAuthReq struct {
 	RoleID  uint64   `json:"role_id" binding:"required,min=1" example:"1"` // 角色ID
-	MenuIDs []uint64 `json:"menu_ids" example:"[1,2,3]"`                   // 菜单ID列表
+	MenuIDs []uint64 `json:"menu_ids"`                                     // 菜单ID列表
 }
 
 // AdminRoleReq 管理员角色分配请求
 type AdminRoleReq struct {
 	AdminID uint64   `json:"admin_id" binding:"required,min=1" example:"1"` // 管理员ID
-	RoleIDs []uint64 `json:"role_ids" example:"[1,2]"`                      // 角色ID列表
+	RoleIDs []uint64 `json:"role_ids"`                                      // 角色ID列表
 }
 
 // AdminRoleRes 管理员角色响应
@@ -112,4 +112,10 @@ type RoleMenuTreeRes struct {
 	MenuType string             `json:"menu_type"`          // 菜单类型
 	Checked  bool               `json:"checked"`            // 是否选中
 	Children []*RoleMenuTreeRes `json:"children,omitempty"` // 子菜单列表
+}
+
+// RoleMenuAuthReq 角色菜单权限分配请求
+type RoleMenuAuthReq struct {
+	RoleID  uint64   `json:"role_id" binding:"required,min=1" example:"1"` // 角色ID
+	MenuIDs []uint64 `json:"menu_ids" example:"1,2,3"`                     // 菜单ID列表
 }

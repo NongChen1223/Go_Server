@@ -43,6 +43,46 @@ definitions:
         description: 消息
         type: string
     type: object
+  dto.AdminInfoDetail:
+    properties:
+      admin_id:
+        description: 管理员ID
+        type: integer
+      admin_name:
+        description: 管理员账号
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      real_name:
+        description: 真实姓名
+        type: string
+      status:
+        description: 状态
+        type: integer
+    type: object
+  dto.AdminInfoRes:
+    properties:
+      admin_info:
+        allOf:
+        - $ref: '#/definitions/dto.AdminInfoDetail'
+        description: 管理员基本信息
+      menus:
+        description: 菜单路由
+        items:
+          $ref: '#/definitions/dto.AdminMenuRouter'
+        type: array
+      perms:
+        description: 权限列表
+        items:
+          type: string
+        type: array
+      roles:
+        description: 角色信息
+        items:
+          $ref: '#/definitions/dto.AdminRoleInfo'
+        type: array
+    type: object
   dto.AdminLoginReq:
     properties:
       admin_name:
@@ -56,6 +96,36 @@ definitions:
     required:
     - admin_name
     - password
+    type: object
+  dto.AdminMenuRouter:
+    properties:
+      children:
+        description: 子路由
+        items:
+          $ref: '#/definitions/dto.AdminMenuRouter'
+        type: array
+      component:
+        description: 组件路径
+        type: string
+      hidden:
+        description: 是否隐藏路由
+        type: boolean
+      meta:
+        allOf:
+        - $ref: '#/definitions/dto.AdminRouterMeta'
+        description: 路由元信息
+      name:
+        description: 路由名称
+        type: string
+      path:
+        description: 路由路径
+        type: string
+      query:
+        description: 路由参数
+        type: string
+      redirect:
+        description: 重定向地址
+        type: string
     type: object
   dto.AdminRegisterReq:
     properties:
@@ -106,7 +176,32 @@ definitions:
     - password
     - real_name
     type: object
+  dto.AdminRoleInfo:
+    properties:
+      role_id:
+        description: 角色ID
+        type: integer
+      role_key:
+        description: 角色权限字符串
+        type: string
+      role_name:
+        description: 角色名称
+        type: string
+    type: object
   dto.AdminRoleReq:
+    properties:
+      admin_id:
+        description: 管理员ID
+        example: 1
+        minimum: 1
+        type: integer
+      role_ids:
+        description: 角色ID列表
+        items:
+          type: integer
+        type: array
+    required:
+    - admin_id
     type: object
   dto.AdminRoleRes:
     properties:
@@ -133,22 +228,42 @@ definitions:
           $ref: '#/definitions/dto.RoleSelectRes'
         type: array
     type: object
+  dto.AdminRouterMeta:
+    properties:
+      icon:
+        description: 图标
+        type: string
+      link:
+        description: 外链地址
+        type: string
+      noCache:
+        description: 是否不缓存
+        type: boolean
+      title:
+        description: 路由标题
+        type: string
+    type: object
   dto.DictTypeReq:
     properties:
       dict_id:
         description: 字典类型ID，更新时需要，创建时忽略
+        example: 1
         type: integer
       dict_name:
         description: 字典名称，必填
+        example: 游戏类型
         type: string
       dict_type:
         description: 字典类型标识，必填，如"game_type"
+        example: game_type
         type: string
       remark:
         description: 备注
+        example: 这是一个备注
         type: string
       status:
         description: 状态（0停用 1正常）
+        example: 1
         type: integer
     required:
     - dict_name
@@ -173,6 +288,7 @@ definitions:
         type: string
       remark:
         description: 备注
+        example: 这是一个备注
         type: string
       status:
         description: 状态（0停用 1正常）
@@ -255,12 +371,15 @@ definitions:
         type: array
       demo_video:
         description: 游戏演示视频链接，可选
+        example: https://example.com/video.mp4
         type: string
       description:
         description: 游戏介绍，可选
+        example: 开放世界冒险游戏
         type: string
       game_id:
         description: 游戏ID，更新时需要，创建时忽略
+        example: 1
         type: integer
       language_codes:
         description: 游戏语言编码数组
@@ -269,9 +388,11 @@ definitions:
         type: array
       name_en:
         description: 游戏英文名称，可选
+        example: Genshin Impact
         type: string
       name_zh:
         description: 游戏中文名称，必填
+        example: 原神
         type: string
       platform_codes:
         description: 游戏平台编码数组
@@ -280,15 +401,19 @@ definitions:
         type: array
       price:
         description: 游戏价格，可选
+        example: 0
         type: number
       publisher_id:
         description: 游戏厂商ID，可选
+        example: 1
         type: integer
       rating:
         description: 游戏评分，可选
+        example: 9.5
         type: number
       release_date:
         description: 游戏发布日期，可选
+        example: "2020-09-28T00:00:00Z"
         type: string
       screenshots:
         description: 游戏截图数组
@@ -297,18 +422,22 @@ definitions:
         type: array
       shutdown_date:
         description: 游戏停服日期，可选
+        example: "2030-12-31T00:00:00Z"
         type: string
       size:
         description: 游戏大小，可选
+        example: 15GB
         type: string
       status:
         description: 状态，必填，只能是0或1
         enum:
         - 0
         - 1
+        example: 1
         type: integer
       studio_id:
         description: 游戏工作室ID，可选
+        example: 1
         type: integer
       type_codes:
         description: 关联数据
@@ -455,9 +584,11 @@ definitions:
     properties:
       password:
         description: 密码，必填
+        example: "123456"
         type: string
       user_name:
         description: 用户名，必填
+        example: testuser
         type: string
     required:
     - password
@@ -845,27 +976,34 @@ definitions:
     properties:
       description:
         description: 厂商介绍，可选
+        example: 知名游戏开发商
         type: string
       founded_date:
         description: 成立日期，可选
+        example: "2012-02-13T00:00:00Z"
         type: string
       logo_url:
         description: 厂商LOGO，可选
+        example: https://example.com/logo.png
         type: string
       publisher_id:
         description: 厂商ID，更新时需要，创建时忽略
+        example: 1
         type: integer
       publisher_name:
         description: 厂商名称，必填
+        example: 米哈游
         type: string
       status:
         description: 状态，必填，只能是0或1
         enum:
         - 0
         - 1
+        example: 1
         type: integer
       website:
         description: 官方网站，可选
+        example: https://www.mihoyo.com
         type: string
     required:
     - publisher_name
@@ -910,10 +1048,16 @@ definitions:
   dto.RegisterUserReq:
     properties:
       email:
+        description: 邮箱，必填
+        example: user@example.com
         type: string
       password:
+        description: 密码，必填
+        example: "123456"
         type: string
       user_name:
+        description: 用户名，必填
+        example: newuser
         type: string
     required:
     - email
@@ -921,8 +1065,63 @@ definitions:
     - user_name
     type: object
   dto.RoleAuthReq:
+    properties:
+      menu_ids:
+        description: 菜单ID列表
+        items:
+          type: integer
+        type: array
+      role_id:
+        description: 角色ID
+        example: 1
+        minimum: 1
+        type: integer
+    required:
+    - role_id
     type: object
   dto.RoleCreateReq:
+    properties:
+      menu_ids:
+        description: 菜单ID列表
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        type: array
+      remark:
+        description: 备注
+        example: 内容管理员角色
+        maxLength: 500
+        type: string
+      role_key:
+        description: 角色权限字符串
+        example: content
+        maxLength: 100
+        minLength: 1
+        type: string
+      role_name:
+        description: 角色名称
+        example: 内容管理员
+        maxLength: 30
+        minLength: 1
+        type: string
+      role_sort:
+        description: 显示顺序
+        example: 1
+        minimum: 0
+        type: integer
+      status:
+        description: 角色状态（0停用 1正常）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - role_key
+    - role_name
     type: object
   dto.RoleDetailRes:
     properties:
@@ -974,6 +1173,48 @@ definitions:
         description: 更新时间
         type: string
     type: object
+  dto.RoleMenuAuthReq:
+    properties:
+      menu_ids:
+        description: 菜单ID列表
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        type: array
+      role_id:
+        description: 角色ID
+        example: 1
+        minimum: 1
+        type: integer
+    required:
+    - role_id
+    type: object
+  dto.RoleMenuTreeRes:
+    properties:
+      checked:
+        description: 是否选中
+        type: boolean
+      children:
+        description: 子菜单列表
+        items:
+          $ref: '#/definitions/dto.RoleMenuTreeRes'
+        type: array
+      menu_id:
+        description: 菜单ID
+        type: integer
+      menu_name:
+        description: 菜单名称
+        type: string
+      menu_type:
+        description: 菜单类型
+        type: string
+      parent_id:
+        description: 父菜单ID
+        type: integer
+    type: object
   dto.RoleSelectRes:
     properties:
       role_id:
@@ -987,6 +1228,50 @@ definitions:
         type: string
     type: object
   dto.RoleUpdateReq:
+    properties:
+      menu_ids:
+        description: 菜单ID列表
+        items:
+          type: integer
+        type: array
+      remark:
+        description: 备注
+        example: 内容管理员角色
+        maxLength: 500
+        type: string
+      role_id:
+        description: 角色ID
+        example: 1
+        minimum: 1
+        type: integer
+      role_key:
+        description: 角色权限字符串
+        example: content
+        maxLength: 100
+        minLength: 1
+        type: string
+      role_name:
+        description: 角色名称
+        example: 内容管理员
+        maxLength: 30
+        minLength: 1
+        type: string
+      role_sort:
+        description: 显示顺序
+        example: 1
+        minimum: 0
+        type: integer
+      status:
+        description: 角色状态（0停用 1正常）
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - role_id
+    - role_key
+    - role_name
     type: object
   dto.UserInfoRes:
     properties:
@@ -1492,6 +1777,36 @@ paths:
       summary: 更新游戏
       tags:
       - Admin-游戏管理
+  /v1/admin/info:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前登录管理员的详细信息，包括基本信息、角色、菜单路由和权限列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AdminInfoRes'
+              type: object
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 管理员不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取管理员信息
+      tags:
+      - Admin-管理员认证
   /v1/admin/login:
     post:
       consumes:
@@ -2343,6 +2658,84 @@ paths:
       security:
       - BearerAuth: []
       summary: 角色授权
+      tags:
+      - Admin-角色管理
+  /v1/admin/roles/menus/{role_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定角色的菜单权限树，显示已分配的菜单权限状态
+      parameters:
+      - description: 角色ID
+        in: path
+        name: role_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.RoleMenuTreeRes'
+                  type: array
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取角色菜单权限树
+      tags:
+      - Admin-角色管理
+  /v1/admin/roles/menus/assign:
+    post:
+      consumes:
+      - application/json
+      description: 为指定角色分配菜单权限
+      parameters:
+      - description: 角色菜单权限分配请求参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RoleMenuAuthReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分配成功
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/common.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/common.Response'
+        "404":
+          description: 角色不存在
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - BearerAuth: []
+      summary: 分配角色菜单权限
       tags:
       - Admin-角色管理
   /v1/admin/roles/select:

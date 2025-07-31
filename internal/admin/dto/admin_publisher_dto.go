@@ -9,13 +9,13 @@ import (
 // PublisherReq 游戏厂商请求结构体
 // 用于创建和更新游戏厂商时接收前端传来的数据
 type PublisherReq struct {
-	PublisherID   uint64     `json:"publisher_id,omitempty"`              // 厂商ID，更新时需要，创建时忽略
-	PublisherName string     `json:"publisher_name" binding:"required"`   // 厂商名称，必填
-	LogoURL       *string    `json:"logo_url"`                            // 厂商LOGO，可选
-	Description   *string    `json:"description"`                         // 厂商介绍，可选
-	FoundedDate   *time.Time `json:"founded_date"`                        // 成立日期，可选
-	Website       *string    `json:"website"`                             // 官方网站，可选
-	Status        int        `json:"status" binding:"required,oneof=0 1"` // 状态，必填，只能是0或1
+	PublisherID   uint64     `json:"publisher_id,omitempty" example:"1"`              // 厂商ID，更新时需要，创建时忽略
+	PublisherName string     `json:"publisher_name" binding:"required" example:"米哈游"` // 厂商名称，必填
+	LogoURL       *string    `json:"logo_url" example:"https://example.com/logo.png"` // 厂商LOGO，可选
+	Description   *string    `json:"description" example:"知名游戏开发商"`                   // 厂商介绍，可选
+	FoundedDate   *time.Time `json:"founded_date" example:"2012-02-13T00:00:00Z"`     // 成立日期，可选
+	Website       *string    `json:"website" example:"https://www.mihoyo.com"`        // 官方网站，可选
+	Status        int        `json:"status" binding:"required,oneof=0 1" example:"1"` // 状态，必填，只能是0或1
 }
 
 // PublisherRes 游戏厂商响应结构体
