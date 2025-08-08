@@ -9,6 +9,14 @@ import (
 	"go_server/internal/admin/services"
 	"go_server/utils"
 	"strconv"
+	"sync"
+	"time"
+)
+
+// 防重复请求的缓存
+var (
+	requestCache = make(map[string]time.Time)
+	cacheMutex   sync.RWMutex
 )
 
 // CreateDictType 创建字典类型
@@ -182,12 +190,38 @@ func GetDictTypeDetail(c *gin.Context) {
 // @Router /v1/admin/dict/types [get]
 func GetDictTypeList(c *gin.Context) {
 	var query dto.DictTypeQuery
-	fmt.Println("获取字典类型列表")
+
+	// 防重复请求检查
+	clientIP := c.ClientIP()
+	requestKey := fmt.Sprintf("dict_type_list_%s", clientIP)
+
+	cacheMutex.RLock()
+	lastRequestTime, exists := requestCache[requestKey]
+	cacheMutex.RUnlock()
+
+	now := time.Now()
+	if exists && now.Sub(lastRequestTime) < 2*time.Second {
+		fmt.Printf("检测到重复请求，忽略。客户端IP: %s, 上次请求时间: %s\n", clientIP, lastRequestTime.Format("15:04:05"))
+		common.Error(c, constants.ErrorCode, "请求过于频繁，请稍后再试")
+		return
+	}
+
+	// 更新请求时间
+	cacheMutex.Lock()
+	requestCache[requestKey] = now
+	cacheMutex.Unlock()
+
+	fmt.Printf("=== 字典类型列表请求 ===\n")
+	fmt.Printf("客户端IP: %s\n", clientIP)
+	fmt.Printf("请求时间: %s\n", now.Format("2006-01-02 15:04:05"))
+
 	// ShouldBindQuery 自动解析URL查询参数
 	if err := c.ShouldBindQuery(&query); err != nil {
+		fmt.Printf("参数绑定错误: %v\n", err)
 		common.Error(c, constants.ErrorCode, "查询参数错误")
 		return
 	}
+	fmt.Printf("查询参数: %+v\n", query)
 
 	// 设置默认分页参数
 	// 如果前端没有传分页参数，使用默认值
@@ -201,12 +235,21 @@ func GetDictTypeList(c *gin.Context) {
 	// 调用服务层获取字典类型列表
 	total, dictTypes, err := services.GetDictTypeList(query)
 	if err != nil {
+		fmt.Printf("服务层错误: %v\n", err)
 		common.Error(c, constants.ErrorCode, err.Error())
 		return
 	}
 
+	fmt.Printf("查询结果: total=%d, count=%d\n", total, len(dictTypes))
+
+	// 添加调试响应头
+	c.Header("X-Request-Time", time.Now().Format("2006-01-02 15:04:05"))
+	c.Header("X-Total-Records", fmt.Sprintf("%d", total))
+	c.Header("X-Debug-Info", "dict-type-list-success")
+
 	// 使用分页响应格式返回数据
 	// 包含当前页、每页数量、总页数、总条数、数据列表
+	fmt.Printf("返回成功响应，总记录数: %d\n", total)
 	common.SuccessWithPage(c, int64(query.PageNum), query.PageSize, total, dictTypes)
 }
 

@@ -747,6 +747,17 @@ VALUES
 (2, 1000), (2, 1010), (2, 1020);
 
 -- ----------------------------
+-- 初始化默认超级管理员账号
+-- 说明：创建系统的初始超级管理员账号，用于系统初始化和紧急管理
+-- 账号信息：用户名admin，密码password(已加密)，邮箱admin@system.com
+-- 安全提醒：生产环境部署后请立即修改默认密码，确保系统安全
+-- 权限说明：该账号拥有超级管理员角色，具备系统所有权限
+-- ----------------------------
+INSERT INTO `sys_admin_user` (`admin_id`, `admin_name`, `real_name`, `email`, `password`, `status`, `del_flag`, `create_by`, `remark`)
+VALUES
+(1, 'admin', '系统管理员', 'admin@system.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, '0', 'system', '系统默认超级管理员账号，密码为password，请及时修改');
+
+-- ----------------------------
 -- 初始化管理员角色关联数据
 -- 说明：为默认管理员账号分配超级管理员角色
 -- 权限继承：通过角色关联，管理员账号继承角色的所有菜单权限

@@ -5,8 +5,10 @@ import (
 	"go_server/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"log"
+	"os"
 	"time"
 )
 
@@ -26,11 +28,23 @@ func buildDSN() string {
 func InitDB() {
 	// 构建 DSN 字符串
 	dsn := buildDSN()
+	// 配置日志级别
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             500 * time.Millisecond, // 慢查询阈值调整为500ms
+			LogLevel:                  logger.Warn,            // 只记录警告和错误
+			IgnoreRecordNotFoundError: true,                   // 忽略记录未找到错误
+			Colorful:                  true,                   // 启用彩色输出
+		},
+	)
+
 	//驱动链接数据库
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // 禁用复数表名
 		},
+		Logger: newLogger, // 使用自定义日志配置
 	})
 	if err != nil {
 		log.Fatalf("数据库启动失败：%v", err)
