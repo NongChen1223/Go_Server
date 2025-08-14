@@ -986,13 +986,17 @@ definitions:
         description: 厂商LOGO，可选
         example: https://example.com/logo.png
         type: string
+      publisher_cn_name:
+        description: 厂商中文名称，必填
+        example: 米哈游
+        type: string
       publisher_id:
         description: 厂商ID，更新时需要，创建时忽略
         example: 1
         type: integer
       publisher_name:
-        description: 厂商名称，必填
-        example: 米哈游
+        description: 厂商英文名称，必填
+        example: miHoYo
         type: string
       status:
         description: 状态，必填，只能是0或1
@@ -1006,14 +1010,12 @@ definitions:
         example: https://www.mihoyo.com
         type: string
     required:
+    - publisher_cn_name
     - publisher_name
     - status
     type: object
   dto.PublisherRes:
     properties:
-      create_by:
-        description: 创建者
-        type: string
       create_time:
         description: 创建时间
         type: string
@@ -1026,18 +1028,18 @@ definitions:
       logo_url:
         description: 厂商LOGO
         type: string
+      publisher_cn_name:
+        description: 厂商中文名称
+        type: string
       publisher_id:
         description: 厂商ID
         type: integer
       publisher_name:
-        description: 厂商名称
+        description: 厂商英文名称
         type: string
       status:
         description: 状态
         type: integer
-      update_by:
-        description: 更新者
-        type: string
       update_time:
         description: 更新时间
         type: string

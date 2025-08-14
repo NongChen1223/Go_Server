@@ -2,6 +2,7 @@ package dto
 
 import (
 	"go_server/common"
+	"go_server/config"
 	"go_server/utils"
 	"time"
 )
@@ -9,26 +10,29 @@ import (
 // PublisherReq 游戏厂商请求结构体
 // 用于创建和更新游戏厂商时接收前端传来的数据
 type PublisherReq struct {
-	PublisherID   uint64     `json:"publisher_id,omitempty" example:"1"`              // 厂商ID，更新时需要，创建时忽略
-	PublisherName string     `json:"publisher_name" binding:"required" example:"米哈游"` // 厂商名称，必填
-	LogoURL       *string    `json:"logo_url" example:"https://example.com/logo.png"` // 厂商LOGO，可选
-	Description   *string    `json:"description" example:"知名游戏开发商"`                   // 厂商介绍，可选
-	FoundedDate   *time.Time `json:"founded_date" example:"2012-02-13T00:00:00Z"`     // 成立日期，可选
-	Website       *string    `json:"website" example:"https://www.mihoyo.com"`        // 官方网站，可选
-	Status        int        `json:"status" binding:"required,oneof=0 1" example:"1"` // 状态，必填，只能是0或1
+	PublisherID     uint64             `json:"publisher_id,omitempty" example:"1"`                 // 厂商ID，更新时需要，创建时忽略
+	PublisherName   string             `json:"publisher_name" binding:"required" example:"miHoYo"` // 厂商英文名称，必填
+	PublisherCnName string             `json:"publisher_cn_name" binding:"required" example:"米哈游"` // 厂商中文名称，必填
+	LogoURL         *string            `json:"logo_url" example:"https://example.com/logo.png"`    // 厂商LOGO，可选
+	Description     *string            `json:"description" example:"知名游戏开发商"`                      // 厂商介绍，可选
+	FoundedDate     *config.CustomTime `json:"founded_date" example:"2012-02-13"`                  // 成立日期，可选，格式：YYYY-MM-DD
+	Website         *string            `json:"website" example:"https://www.mihoyo.com"`           // 官方网站，可选
+	Status          int                `json:"status" binding:"required,oneof=0 1" example:"1"`    // 状态，必填，只能是0或1
 }
 
 // PublisherRes 游戏厂商响应结构体
 // 用于返回游戏厂商数据
 type PublisherRes struct {
-	PublisherID   uint64     `json:"publisher_id"`   // 厂商ID
-	PublisherName string     `json:"publisher_name"` // 厂商名称
-	LogoURL       *string    `json:"logo_url"`       // 厂商LOGO
-	Description   *string    `json:"description"`    // 厂商介绍
-	FoundedDate   *time.Time `json:"founded_date"`   // 成立日期
-	Website       *string    `json:"website"`        // 官方网站
-	Status        int        `json:"status"`         // 状态
-	common.BaseEntity
+	PublisherID     uint64             `json:"publisher_id"`      // 厂商ID
+	PublisherName   string             `json:"publisher_name"`    // 厂商英文名称
+	PublisherCnName string             `json:"publisher_cn_name"` // 厂商中文名称
+	LogoURL         *string            `json:"logo_url"`          // 厂商LOGO
+	Description     *string            `json:"description"`       // 厂商介绍
+	FoundedDate     *config.CustomTime `json:"founded_date"`      // 成立日期
+	Website         *string            `json:"website"`           // 官方网站
+	Status          int                `json:"status"`            // 状态
+	CreateTime      *time.Time         `json:"create_time"`       // 创建时间
+	UpdateTime      *time.Time         `json:"update_time"`       // 更新时间
 }
 
 // PublisherQuery 游戏厂商查询参数

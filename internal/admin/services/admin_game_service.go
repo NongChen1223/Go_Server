@@ -10,6 +10,7 @@ package services
 
 import (
 	"errors"                       // Go标准库，用于创建错误对象
+	"go_server/config"             // 配置包，包含自定义时间类型
 	"go_server/global"             // 全局变量，包含数据库连接等
 	"go_server/internal/admin/dto" // 数据传输对象，定义请求和响应结构
 	"go_server/models"             // 数据模型，定义数据库表结构
@@ -85,6 +86,17 @@ func CreateGame(req dto.GameReq, adminName string) error {
 
 	// ========== 第三步：创建游戏主记录 ==========
 
+	// 处理时间字段转换
+	var releaseDate *time.Time
+	if req.ReleaseDate != nil && !req.ReleaseDate.Time.IsZero() {
+		releaseDate = &req.ReleaseDate.Time
+	}
+
+	var shutdownDate *time.Time
+	if req.ShutdownDate != nil && !req.ShutdownDate.Time.IsZero() {
+		shutdownDate = &req.ShutdownDate.Time
+	}
+
 	// Go语法：&models.SysGame{} 创建SysGame结构体的指针
 	// 花括号{}内是结构体字段初始化，使用字段名: 值的格式
 	// 在Go中，数据库操作通常使用指针，因为GORM需要修改结构体的字段（如自动设置ID）
@@ -92,7 +104,7 @@ func CreateGame(req dto.GameReq, adminName string) error {
 		// 基础信息字段：直接从请求参数赋值
 		NameZh:      req.NameZh,      // 游戏中文名称（必填）
 		NameEn:      req.NameEn,      // 游戏英文名称（可选，指针类型）
-		ReleaseDate: req.ReleaseDate, // 发布日期（可选，指针类型）
+		ReleaseDate: releaseDate,     // 发布日期（转换后的时间类型）
 		Description: req.Description, // 游戏介绍（可选，指针类型）
 		Rating:      req.Rating,      // 游戏评分（可选，指针类型）
 		Size:        req.Size,        // 游戏大小（可选，指针类型）
@@ -103,9 +115,9 @@ func CreateGame(req dto.GameReq, adminName string) error {
 		StudioID:    req.StudioID,    // 工作室ID（可选，指针类型）
 
 		// 其他字段
-		ShutdownDate: req.ShutdownDate, // 停服日期（可选，指针类型）
-		DemoVideo:    req.DemoVideo,    // 演示视频（可选，指针类型）
-		Status:       req.Status,       // 状态（必填，int类型）
+		ShutdownDate: shutdownDate,  // 停服日期（转换后的时间类型）
+		DemoVideo:    req.DemoVideo, // 演示视频（可选，指针类型）
+		Status:       req.Status,    // 状态（必填，int类型）
 
 		// 审计字段：记录操作者信息
 		CreateBy: adminName, // 创建者
@@ -427,11 +439,22 @@ func UpdateGame(req dto.GameReq, adminName string) error {
 	// Go语法：map[string]interface{} 是一个映射类型
 	// string是键的类型，interface{}是值的类型
 	// interface{}可以存储任何类型的值，类似于其他语言的Object或Any
+	// 处理时间字段转换
+	var releaseDate *time.Time
+	if req.ReleaseDate != nil && !req.ReleaseDate.Time.IsZero() {
+		releaseDate = &req.ReleaseDate.Time
+	}
+
+	var shutdownDate *time.Time
+	if req.ShutdownDate != nil && !req.ShutdownDate.Time.IsZero() {
+		shutdownDate = &req.ShutdownDate.Time
+	}
+
 	updateData := map[string]interface{}{
 		// 基础信息字段
 		"name_zh":      req.NameZh,      // 游戏中文名称
 		"name_en":      req.NameEn,      // 游戏英文名称（可能为nil）
-		"release_date": req.ReleaseDate, // 发布日期（可能为nil）
+		"release_date": releaseDate,     // 发布日期（转换后的时间类型）
 		"description":  req.Description, // 游戏介绍（可能为nil）
 		"rating":       req.Rating,      // 游戏评分（可能为nil）
 		"size":         req.Size,        // 游戏大小（可能为nil）
@@ -442,9 +465,9 @@ func UpdateGame(req dto.GameReq, adminName string) error {
 		"studio_id":    req.StudioID,    // 工作室ID（可能为nil）
 
 		// 其他字段
-		"shutdown_date": req.ShutdownDate, // 停服日期（可能为nil）
-		"demo_video":    req.DemoVideo,    // 演示视频（可能为nil）
-		"status":        req.Status,       // 状态
+		"shutdown_date": shutdownDate,  // 停服日期（转换后的时间类型）
+		"demo_video":    req.DemoVideo, // 演示视频（可能为nil）
+		"status":        req.Status,    // 状态
 
 		// 审计字段
 		"update_by":   adminName,  // 更新者
@@ -630,6 +653,17 @@ func GetGameDetail(gameID uint64) (*dto.GameRes, error) {
 
 	// ========== 第二步：构建响应对象 ==========
 
+	// 处理时间字段转换
+	var releaseDate *config.CustomTime
+	if game.ReleaseDate != nil {
+		releaseDate = &config.CustomTime{Time: *game.ReleaseDate}
+	}
+
+	var shutdownDate *config.CustomTime
+	if game.ShutdownDate != nil {
+		shutdownDate = &config.CustomTime{Time: *game.ShutdownDate}
+	}
+
 	// 将数据库模型转换为响应DTO
 	// 这种手动赋值的方式虽然代码较多，但清晰明了，便于维护
 	// 也可以使用反射或第三方库自动转换，但会牺牲性能和可读性
@@ -638,14 +672,14 @@ func GetGameDetail(gameID uint64) (*dto.GameRes, error) {
 		GameID:       game.GameID,       // 游戏ID
 		NameZh:       game.NameZh,       // 中文名称
 		NameEn:       game.NameEn,       // 英文名称（可能为nil）
-		ReleaseDate:  game.ReleaseDate,  // 发布日期（可能为nil）
+		ReleaseDate:  releaseDate,       // 发布日期（转换后的时间类型）
 		Description:  game.Description,  // 游戏介绍（可能为nil）
 		Rating:       game.Rating,       // 游戏评分（可能为nil）
 		Size:         game.Size,         // 游戏大小（可能为nil）
 		Price:        game.Price,        // 游戏价格（可能为nil）
 		PublisherID:  game.PublisherID,  // 厂商ID（可能为nil）
 		StudioID:     game.StudioID,     // 工作室ID（可能为nil）
-		ShutdownDate: game.ShutdownDate, // 停服日期（可能为nil）
+		ShutdownDate: shutdownDate,      // 停服日期（转换后的时间类型）
 		CommentCount: game.CommentCount, // 评论数量
 		LikeCount:    game.LikeCount,    // 点赞数量
 		DemoVideo:    game.DemoVideo,    // 演示视频（可能为nil）
@@ -1030,6 +1064,17 @@ func GetGameList(query dto.GameQuery) (int64, []*dto.GameRes, error) {
 
 	// 遍历查询结果，逐个转换为DTO
 	for _, game := range games {
+		// 处理时间字段转换
+		var releaseDate *config.CustomTime
+		if game.ReleaseDate != nil {
+			releaseDate = &config.CustomTime{Time: *game.ReleaseDate}
+		}
+
+		var shutdownDate *config.CustomTime
+		if game.ShutdownDate != nil {
+			shutdownDate = &config.CustomTime{Time: *game.ShutdownDate}
+		}
+
 		// 创建游戏响应DTO
 		// 注意：这里使用指针类型，因为result切片存储的是指针
 		gameRes := &dto.GameRes{
@@ -1037,14 +1082,14 @@ func GetGameList(query dto.GameQuery) (int64, []*dto.GameRes, error) {
 			GameID:       game.GameID,
 			NameZh:       game.NameZh,
 			NameEn:       game.NameEn,
-			ReleaseDate:  game.ReleaseDate,
+			ReleaseDate:  releaseDate, // 转换后的时间类型
 			Description:  game.Description,
 			Rating:       game.Rating,
 			Size:         game.Size,
 			Price:        game.Price,
 			PublisherID:  game.PublisherID,
 			StudioID:     game.StudioID,
-			ShutdownDate: game.ShutdownDate,
+			ShutdownDate: shutdownDate, // 转换后的时间类型
 			CommentCount: game.CommentCount,
 			LikeCount:    game.LikeCount,
 			DemoVideo:    game.DemoVideo,

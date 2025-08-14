@@ -421,6 +421,7 @@ CREATE TABLE `sys_publisher`
 (
     `publisher_id`   bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '厂商ID - 主键，自动递增',
     `publisher_name` varchar(100) NOT NULL COMMENT '厂商名称 - 如"腾讯游戏"、"网易游戏"',
+    `publisher_cn_name` varchar(100) NOT NULL COMMENT '厂商中文名称 -',
     `logo_url`       varchar(255)          DEFAULT NULL COMMENT '厂商LOGO - 存储logo图片路径',
     `description`    text                  DEFAULT NULL COMMENT '厂商介绍 - 存储长文本',
     `founded_date`   date                  DEFAULT NULL COMMENT '成立日期 - 厂商成立时间',

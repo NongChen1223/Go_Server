@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"go_server/config"
 	"go_server/global"
 	"go_server/internal/admin/dto"
 	"go_server/models"
@@ -28,15 +29,20 @@ func CreatePublisher(req dto.PublisherReq, adminName string) error {
 	// 创建厂商记录
 	// &符号表示获取结构体的指针，在Go中通常使用指针来操作数据库记录
 	// 花括号{}内是结构体字段初始化，字段名: 值
+	// 处理成立日期转换
+	var foundedDate *time.Time
+	if req.FoundedDate != nil && !req.FoundedDate.Time.IsZero() {
+		foundedDate = &req.FoundedDate.Time
+	}
+
 	publisher := &models.SysPublisher{
-		PublisherName: req.PublisherName, // 将请求中的厂商名称赋值给模型
-		LogoURL:       req.LogoURL,       // LogoURL是指针类型(*string)，可以直接赋值nil或字符串指针
-		Description:   req.Description,   // Description也是指针类型
-		FoundedDate:   req.FoundedDate,   // FoundedDate是*time.Time类型
-		Website:       req.Website,       // Website是*string类型
-		Status:        req.Status,        // Status是int类型，表示厂商状态
-		CreateBy:      adminName,         // 记录创建者
-		UpdateBy:      adminName,         // 初始时更新者与创建者相同
+		PublisherName:   req.PublisherName,   // 将请求中的厂商英文名称赋值给模型
+		PublisherCnName: req.PublisherCnName, // 将请求中的厂商中文名称赋值给模型
+		LogoURL:         req.LogoURL,         // LogoURL是指针类型(*string)，可以直接赋值nil或字符串指针
+		Description:     req.Description,     // Description也是指针类型
+		FoundedDate:     foundedDate,         // 转换后的时间类型
+		Website:         req.Website,         // Website是*string类型
+		Status:          req.Status,          // Status是int类型，表示厂商状态
 	}
 
 	// 执行数据库插入操作
@@ -67,14 +73,20 @@ func UpdatePublisher(req dto.PublisherReq, adminName string) error {
 		}
 	}
 
+	// 处理成立日期转换
+	var foundedDate *time.Time
+	if req.FoundedDate != nil && !req.FoundedDate.Time.IsZero() {
+		foundedDate = &req.FoundedDate.Time
+	}
+
 	// 更新游戏厂商数据
 	publisher.PublisherName = req.PublisherName
+	publisher.PublisherCnName = req.PublisherCnName
 	publisher.LogoURL = req.LogoURL
 	publisher.Description = req.Description
-	publisher.FoundedDate = req.FoundedDate
+	publisher.FoundedDate = foundedDate
 	publisher.Website = req.Website
 	publisher.Status = req.Status
-	publisher.UpdateBy = adminName
 	// 手动设置更新时间
 	now := time.Now()
 	publisher.UpdateTime = &now
@@ -96,23 +108,28 @@ func GetPublisherDetail(publisherID uint64) (*dto.PublisherRes, error) {
 		return nil, err
 	}
 
+	// 处理成立日期转换
+	var foundedDate *config.CustomTime
+	if publisher.FoundedDate != nil {
+		foundedDate = &config.CustomTime{Time: *publisher.FoundedDate}
+	}
+
 	// 将数据库模型转换为响应DTO
 	// 使用逐个赋值的方式，更清晰明了
 	res := &dto.PublisherRes{
-		PublisherID:   publisher.PublisherID,
-		PublisherName: publisher.PublisherName,
-		LogoURL:       publisher.LogoURL,
-		Description:   publisher.Description,
-		FoundedDate:   publisher.FoundedDate,
-		Website:       publisher.Website,
-		Status:        publisher.Status,
+		PublisherID:     publisher.PublisherID,
+		PublisherName:   publisher.PublisherName,
+		PublisherCnName: publisher.PublisherCnName,
+		LogoURL:         publisher.LogoURL,
+		Description:     publisher.Description,
+		FoundedDate:     foundedDate,
+		Website:         publisher.Website,
+		Status:          publisher.Status,
 	}
 
 	// 赋值嵌入的公共字段
 	res.CreateTime = publisher.CreateTime
 	res.UpdateTime = publisher.UpdateTime
-	res.CreateBy = publisher.CreateBy
-	res.UpdateBy = publisher.UpdateBy
 
 	return res, nil
 }
@@ -154,22 +171,27 @@ func GetPublisherList(query dto.PublisherQuery) (int64, []*dto.PublisherRes, err
 	// 初始化为空切片而不是nil，确保JSON序列化为[]而不是null
 	result := make([]*dto.PublisherRes, 0)
 	for _, publisher := range publishers {
+		// 处理成立日期转换
+		var foundedDate *config.CustomTime
+		if publisher.FoundedDate != nil {
+			foundedDate = &config.CustomTime{Time: *publisher.FoundedDate}
+		}
+
 		// 创建单个响应对象
 		res := &dto.PublisherRes{
-			PublisherID:   publisher.PublisherID,
-			PublisherName: publisher.PublisherName,
-			LogoURL:       publisher.LogoURL,
-			Description:   publisher.Description,
-			FoundedDate:   publisher.FoundedDate,
-			Website:       publisher.Website,
-			Status:        publisher.Status,
+			PublisherID:     publisher.PublisherID,
+			PublisherName:   publisher.PublisherName,
+			PublisherCnName: publisher.PublisherCnName,
+			LogoURL:         publisher.LogoURL,
+			Description:     publisher.Description,
+			FoundedDate:     foundedDate,
+			Website:         publisher.Website,
+			Status:          publisher.Status,
 		}
 
 		// 赋值嵌入的公共字段
 		res.CreateTime = publisher.CreateTime
 		res.UpdateTime = publisher.UpdateTime
-		res.CreateBy = publisher.CreateBy
-		res.UpdateBy = publisher.UpdateBy
 
 		// 添加到结果数组中
 		result = append(result, res)

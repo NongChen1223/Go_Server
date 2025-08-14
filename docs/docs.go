@@ -3864,6 +3864,7 @@ const docTemplate = `{
         "dto.PublisherReq": {
             "type": "object",
             "required": [
+                "publisher_cn_name",
                 "publisher_name",
                 "status"
             ],
@@ -3883,15 +3884,20 @@ const docTemplate = `{
                     "type": "string",
                     "example": "https://example.com/logo.png"
                 },
+                "publisher_cn_name": {
+                    "description": "厂商中文名称，必填",
+                    "type": "string",
+                    "example": "米哈游"
+                },
                 "publisher_id": {
                     "description": "厂商ID，更新时需要，创建时忽略",
                     "type": "integer",
                     "example": 1
                 },
                 "publisher_name": {
-                    "description": "厂商名称，必填",
+                    "description": "厂商英文名称，必填",
                     "type": "string",
-                    "example": "米哈游"
+                    "example": "miHoYo"
                 },
                 "status": {
                     "description": "状态，必填，只能是0或1",
@@ -3912,10 +3918,6 @@ const docTemplate = `{
         "dto.PublisherRes": {
             "type": "object",
             "properties": {
-                "create_by": {
-                    "description": "创建者",
-                    "type": "string"
-                },
                 "create_time": {
                     "description": "创建时间",
                     "type": "string"
@@ -3932,21 +3934,21 @@ const docTemplate = `{
                     "description": "厂商LOGO",
                     "type": "string"
                 },
+                "publisher_cn_name": {
+                    "description": "厂商中文名称",
+                    "type": "string"
+                },
                 "publisher_id": {
                     "description": "厂商ID",
                     "type": "integer"
                 },
                 "publisher_name": {
-                    "description": "厂商名称",
+                    "description": "厂商英文名称",
                     "type": "string"
                 },
                 "status": {
                     "description": "状态",
                     "type": "integer"
-                },
-                "update_by": {
-                    "description": "更新者",
-                    "type": "string"
                 },
                 "update_time": {
                     "description": "更新时间",
