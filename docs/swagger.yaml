@@ -43,6 +43,12 @@ definitions:
         description: 消息
         type: string
     type: object
+  config.CustomTime:
+    description: 自定义时间类型，支持 YYYY-MM-DD 格式
+    properties:
+      time.Time:
+        type: string
+    type: object
   dto.AdminInfoDetail:
     properties:
       admin_id:
@@ -412,8 +418,8 @@ definitions:
         example: 9.5
         type: number
       release_date:
-        description: 游戏发布日期，可选
-        example: "2020-09-28T00:00:00Z"
+        description: 游戏发布日期，可选，格式：YYYY-MM-DD
+        example: "2020-09-28"
         type: string
       screenshots:
         description: 游戏截图数组
@@ -421,8 +427,8 @@ definitions:
           $ref: '#/definitions/dto.GameScreenshotReq'
         type: array
       shutdown_date:
-        description: 游戏停服日期，可选
-        example: "2030-12-31T00:00:00Z"
+        description: 游戏停服日期，可选，格式：YYYY-MM-DD
+        example: "2030-12-31"
         type: string
       size:
         description: 游戏大小，可选
@@ -505,16 +511,18 @@ definitions:
         description: 游戏评分
         type: number
       release_date:
+        allOf:
+        - $ref: '#/definitions/config.CustomTime'
         description: 游戏发布日期
-        type: string
       screenshots:
         description: 游戏截图
         items:
           $ref: '#/definitions/dto.GameScreenshotRes'
         type: array
       shutdown_date:
+        allOf:
+        - $ref: '#/definitions/config.CustomTime'
         description: 游戏停服日期
-        type: string
       size:
         description: 游戏大小
         type: string
@@ -979,8 +987,8 @@ definitions:
         example: 知名游戏开发商
         type: string
       founded_date:
-        description: 成立日期，可选
-        example: "2012-02-13T00:00:00Z"
+        description: 成立日期，可选，格式：YYYY-MM-DD
+        example: "2012-02-13"
         type: string
       logo_url:
         description: 厂商LOGO，可选
@@ -1023,8 +1031,9 @@ definitions:
         description: 厂商介绍
         type: string
       founded_date:
+        allOf:
+        - $ref: '#/definitions/config.CustomTime'
         description: 成立日期
-        type: string
       logo_url:
         description: 厂商LOGO
         type: string

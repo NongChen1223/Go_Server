@@ -2611,6 +2611,15 @@ const docTemplate = `{
                 }
             }
         },
+        "config.CustomTime": {
+            "description": "自定义时间类型，支持 YYYY-MM-DD 格式",
+            "type": "object",
+            "properties": {
+                "time.Time": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.AdminInfoDetail": {
             "type": "object",
             "properties": {
@@ -3119,9 +3128,9 @@ const docTemplate = `{
                     "example": 9.5
                 },
                 "release_date": {
-                    "description": "游戏发布日期，可选",
+                    "description": "游戏发布日期，可选，格式：YYYY-MM-DD",
                     "type": "string",
-                    "example": "2020-09-28T00:00:00Z"
+                    "example": "2020-09-28"
                 },
                 "screenshots": {
                     "description": "游戏截图数组",
@@ -3131,9 +3140,9 @@ const docTemplate = `{
                     }
                 },
                 "shutdown_date": {
-                    "description": "游戏停服日期，可选",
+                    "description": "游戏停服日期，可选，格式：YYYY-MM-DD",
                     "type": "string",
-                    "example": "2030-12-31T00:00:00Z"
+                    "example": "2030-12-31"
                 },
                 "size": {
                     "description": "游戏大小，可选",
@@ -3241,7 +3250,11 @@ const docTemplate = `{
                 },
                 "release_date": {
                     "description": "游戏发布日期",
-                    "type": "string"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/config.CustomTime"
+                        }
+                    ]
                 },
                 "screenshots": {
                     "description": "游戏截图",
@@ -3252,7 +3265,11 @@ const docTemplate = `{
                 },
                 "shutdown_date": {
                     "description": "游戏停服日期",
-                    "type": "string"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/config.CustomTime"
+                        }
+                    ]
                 },
                 "size": {
                     "description": "游戏大小",
@@ -3875,9 +3892,9 @@ const docTemplate = `{
                     "example": "知名游戏开发商"
                 },
                 "founded_date": {
-                    "description": "成立日期，可选",
+                    "description": "成立日期，可选，格式：YYYY-MM-DD",
                     "type": "string",
-                    "example": "2012-02-13T00:00:00Z"
+                    "example": "2012-02-13"
                 },
                 "logo_url": {
                     "description": "厂商LOGO，可选",
@@ -3928,7 +3945,11 @@ const docTemplate = `{
                 },
                 "founded_date": {
                     "description": "成立日期",
-                    "type": "string"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/config.CustomTime"
+                        }
+                    ]
                 },
                 "logo_url": {
                     "description": "厂商LOGO",

@@ -8,6 +8,8 @@ import (
 )
 
 // CustomTime 自定义时间类型，支持多种格式
+// @Description 自定义时间类型，支持 YYYY-MM-DD 格式
+// @Example "2020-09-28"
 type CustomTime struct {
 	time.Time
 }
